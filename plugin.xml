@@ -27,6 +27,17 @@
 
         <source-file src="src/android/SdkWrapper.java" target-dir="src/com/exacttarget/hybridPlugin" />
     </platform>
-    
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="ETPush">
+                <param name="ios-package" value="SdkWrapper"/>
+            </feature>
+        </config-file>
+        
+        <header-file src="src/ios/SdkWrapper.h" />
+        <source-file src="src/ios/SdkWrapper.m" />
+    </platform>
+
 
 </plugin>
