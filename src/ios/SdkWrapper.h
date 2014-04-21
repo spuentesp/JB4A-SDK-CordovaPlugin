@@ -24,6 +24,6 @@
 {}
 
 
-- (void)test;
+- (void)test:(CDVInvokedUrlCommand*)command;
 
 @end

@@ -27,11 +27,13 @@
 @interface SdkWrapper () {}
 @end
 
-@implementation CDVDevice
+@implementation SdkWrapper
 
-- (void)test
+- (void)test:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"Test");
+     NSLog(@"Test");
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:deviceProperties];
+   
 }
 
 

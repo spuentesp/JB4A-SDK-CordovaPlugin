@@ -24,8 +24,82 @@
                 <param name="android-package" value="com.exacttarget.hybridPlugin.SdkWrapper"/>
             </feature>
         </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <!-- ExactTarget required permissions -->
+            <permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE"
+            android:protectionLevel="signature"/>
+            <uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE"/>
+            <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+            <uses-permission android:name="android.permission.WAKE_LOCK"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <!-- END ExactTarget Required Permissions -->
+            
+            <!-- ExactTarget Permissions for location and region monitoring -->
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+            <!-- END ExactTarget location and region monitoring Permissions -->
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!-- ET Broadcast Receiver for handling push messages. -->
+            <receiver android:name="com.exacttarget.etpushsdk.ET_GenericReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                    <category android:name="$PACKAGE_NAME"/>
+                </intent-filter> </receiver>
+            <!-- ET Broadcast Receivers for for sending data (required) -->
+            <receiver android:name="com.exacttarget.etpushsdk.ETSendDataReceiver"/>
+            
+            <!-- ET Broadcast Receivers for handling location updates -->
+            <receiver android:name="com.exacttarget.etpushsdk.location.receiver.LocationChangedReceiver"/> <!-- Get location ourselves -->
+            <receiver android:name="com.exacttarget.etpushsdk.location.receiver.PassiveLocationChangedReceiver"/> <!-- piggyback and listen in on other apps that request location updates -->
+            <receiver android:name="com.exacttarget.etpushsdk.location.receiver.PowerStateChangedReceiver"> <!-- Don't kill their battery using gps if it's low -->
+                <intent-filter>
+                    <action android:name="android.intent.action.ACTION_BATTERY_LOW"/>
+                    <action android:name="android.intent.action.ACTION_BATTERY_OKAY"/>
+                </intent-filter>
+            </receiver>
+            
+            <receiver android:name="com.exacttarget.etpushsdk.ETLocationTimeoutReceiver"/>
+            <receiver android:name="com.exacttarget.etpushsdk.ETLocationWakeupReceiver"/>
+            <receiver android:name="com.exacttarget.etpushsdk.ETGeofenceReceiver"/>
+            
+            <!-- figure out where they are if they just turned on their phone (e.g. plane trip) -->
+            <receiver android:enabled="true" android:exported="true" android:name="com.exacttarget.etpushsdk.location.receiver.BootReceiver" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                </intent-filter>
+            </receiver>
+            
+            <!-- ET Service handlers for handling location updates -->
+            <service android:name="com.exacttarget.etpushsdk.ETLocationTimeoutService"/>
+            <service android:name="com.exacttarget.etpushsdk.ETLocationWakeupService"/>
+            <service android:name="com.exacttarget.etpushsdk.ETGeofenceIntentService"/>
+            
+            <!-- ET Service handlers for sending data (required) -->
+            <service android:name="com.exacttarget.etpushsdk.ETSendDataIntentService"/>
+            
+            </config-file>
 
         <source-file src="src/android/SdkWrapper.java" target-dir="src/com/exacttarget/hybridPlugin" />
+        <source-file src="src/android/etsdk-3.1.2.jar" target-dir="libs" />
+        <source-file src="src/android/google-play-services-16.0.0.jar" target-dir="libs" />
+        <source-file src="src/android/jackson-annotations-2.2.3.jar" target-dir="libs" />
+        <source-file src="src/android/jackson-core-2.2.3.jar" target-dir="libs" />
+        <source-file src="src/android/jackson-databind-2.2.3.jar" target-dir="libs" />
+        <source-file src="src/android/joda-convert-1.5.jar" target-dir="libs" />
+        <source-file src="src/android/joda-time-2.2.jar" target-dir="libs" />
+        <source-file src="src/android/ormlite-android-4.47.jar" target-dir="libs" />
+        <source-file src="src/android/ormlite-core-4.47.jar" target-dir="libs" />
+        <source-file src="src/android/support-v4-19.1.0jar" target-dir="libs" />
     </platform>
     <!-- ios -->
     <platform name="ios">
