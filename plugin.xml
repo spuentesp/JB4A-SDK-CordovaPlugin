@@ -108,9 +108,26 @@
                 <param name="ios-package" value="SdkWrapper"/>
             </feature>
         </config-file>
-        
         <header-file src="src/ios/SdkWrapper.h" />
         <source-file src="src/ios/SdkWrapper.m" />
+        <source-file src="src/ios/etpushsdk/libetpushsdk-2.1.1.a" framework="true" />
+        <header-file src="src/ios/etpushsdk/ETLandingPagePresenter.h" />
+        <header-file src="src/ios/etpushsdk/ETLocationManager.h" />
+        <header-file src="src/ios/etpushsdk/ETPhoneHome.h" />
+        <header-file src="src/ios/etpushsdk/ETPush.h" />
+        <header-file src="src/ios/etpushsdk/ETSqliteHelper.h" />
+        <header-file src="src/ios/etpushsdk/ETURLConnection.h" />
+        <header-file src="src/ios/etpushsdk/ExactTargetEnhancedPushDataSource.h" />
+        <header-file src="src/ios/etpushsdk/FenceMessage.h" />
+        <header-file src="src/ios/etpushsdk/GenericUpdate.h" />
+        <header-file src="src/ios/etpushsdk/Geofence.h" />
+        <header-file src="src/ios/etpushsdk/KeyValueStore.h" />
+        <header-file src="src/ios/etpushsdk/LocationUpdate.h" />
+        <header-file src="src/ios/etpushsdk/Message.h" />
+        <header-file src="src/ios/etpushsdk/PushConstants.h" />
+        <header-file src="src/ios/etpushsdk/Region.h" />
+        <header-file src="src/ios/etpushsdk/Registration.h" />
+        <header-file src="src/ios/etpushsdk/StatsUpdate.h" />
     </platform>
 
 
