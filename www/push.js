@@ -110,4 +110,3 @@
         cordova.exec(successCallback, errorCallback, "SdkWrapper", "getSubscriberKey", []);
     },
  }
-

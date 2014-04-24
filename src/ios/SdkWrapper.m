@@ -32,7 +32,6 @@
 - (void)test:(CDVInvokedUrlCommand*)command
 {
      NSLog(@"Test");
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:deviceProperties];
    
 }
 
