@@ -98,11 +98,11 @@
         cordova.exec(successCallback, errorCallback, "SdkWrapper", "getSubscriberKey", []);
     },
     //add an attribute and set its value
-    addAttribute: function(SuccessCallback, errorCallback, name, var value) {
+    addAttribute: function(SuccessCallback, errorCallback, name, value) {
         cordova.exec(successCallback, errorCallback, "SdkWrapper", "getSubscriberKey", []);
     },
     //remove an attribute
-    removeAttribute: function(SuccessCallback, errorCallback, name, var value) {
+    removeAttribute: function(SuccessCallback, errorCallback, name, value) {
         cordova.exec(successCallback, errorCallback, "SdkWrapper", "getSubscriberKey", []);
     },
     //returns all attributes
