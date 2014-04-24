@@ -19,16 +19,6 @@
  *
 */
 
-var argscheck = require('cordova/argscheck'),
-    channel = require('cordova/channel'),
-    utils = require('cordova/utils'),
-    exec = require('cordova/exec'),
-    cordova = require('cordova');
-
-channel.createSticky('onCordovaInfoReady');
-// Tell cordova channel to wait on the CordovaInfoReady event
-channel.waitForInitialization('onCordovaInfoReady');
-
 /**
  * This represents the mobile device, and provides properties for inspecting the model, version, UUID of the
  * phone, etc.
@@ -121,4 +111,3 @@ channel.waitForInitialization('onCordovaInfoReady');
     }
  }
 
-module.exports = ETPush;
