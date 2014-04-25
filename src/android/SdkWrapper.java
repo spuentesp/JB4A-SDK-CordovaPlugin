@@ -136,7 +136,7 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
                 Log.e(TAG, e.getMessage(), e);
             }
         }
-    }
+    
         
     public void reRegister()
     {
