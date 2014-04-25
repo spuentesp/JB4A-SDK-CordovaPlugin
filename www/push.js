@@ -61,7 +61,8 @@
  * @param {Function} errorCallback The function to call when there is an error getting the heading data. (OPTIONAL)
  */
 
- var ETPush = {
+ var ETPush =( function() {
+    var etpush = {},
     Test: function(successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "SdkWrapper", "test", []);
     },
@@ -109,4 +110,5 @@
     allAttributes: function(SuccessCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "SdkWrapper", "getSubscriberKey", []);
     },
- }
+ }());
+module.exports = ETPush;
