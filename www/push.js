@@ -5,21 +5,9 @@ var exec = require('cordova/exec');
     console.log("Testing etpush");
         cordova.exec(successCallback, errorCallback, "ETPush", "test", []);
     },
-    register: function(successCallback, errorCallback, accessToken, appID)
-    {
-        
-    },
     //returns boolean with whether device notifications are active
     isPushEnabled: function(SuccessCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "ETPush", "isPushEnabled", []);
-    },
-    //returns the uniqe device identifier
-    safeDeviceIdentifier: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "safeDeviceIdentifier", []);
-    },
-    //get the current subscriber key
-    getSubscriberKey: function(SuccessCallback, errorCallback, subscriberKey) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
     },
     //set the current subscriber key
     setSubscriberKey: function(SuccessCallback, errorCallback,subscriberKey, value) {
@@ -27,26 +15,34 @@ var exec = require('cordova/exec');
     },
     // add a tag 
     addTag: function(SuccessCallback, errorCallback, tag, value) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
+        cordova.exec(successCallback, errorCallback, "ETPush", "addTag", []);
     },
     //remove a tag
     removeTag: function(SuccessCallback, errorCallback, tag) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
-    },
-    //return all the tags
-    allTags: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
+        cordova.exec(successCallback, errorCallback, "ETPush", "removeTag", []);
     },
     //add an attribute and set its value
     addAttribute: function(SuccessCallback, errorCallback, name, value) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
+        cordova.exec(successCallback, errorCallback, "ETPush", "addAttributes", []);
     },
     //remove an attribute
-    removeAttribute: function(SuccessCallback, errorCallback, name, value) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
+    removeAttribute: function(SuccessCallback, errorCallback, name) {
+        cordova.exec(successCallback, errorCallback, "ETPush", "removeAttributes", []);
     },
-    //returns all attributes
-    allAttributes: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
+    //enable geolocation
+    enableGeolocation: function(SuccessCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ETPush", "enableGeoLocation", []);
     },
+    //disable geolocation
+    disableGeolocation: function(SuccessCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ETPush", "disableGeoLocation", []);
+    },
+    //enable Geolocation
+    enablePush: function (SuccessCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ETPush", "enablePush", []);
+    }, 
+    //disableGeolocation
+    disbalePush: function(SuccessCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ETPush", "disablePush", []);
+    }
 };

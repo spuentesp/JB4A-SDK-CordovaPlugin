@@ -93,132 +93,136 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
                 Log.e(TAG, e.getMessage(), e);
     		}
         }
+        else if(action.equals("setSubscriberKey"))
+        {
+            ETPush.pushManager.setSubscriberKey(args.getString(0));
+        }
         else {
             return false;
         }
         return true;
     }
-    	
+    
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
-            Log.d(TAG, "Preference changed: " + key);
-            try {
-                if ("pref_notify".equals(key)) {
-                    boolean pushEnabled = sharedPreferences.getBoolean(key, true);
-                    if (pushEnabled) {
-                        ETPush.pushManager().enablePush(mainActivity);
-                    }
-                    else {
-                        ETPush.pushManager().disablePush(mainActivity);
-                    }
-                }
-                else if (key.startsWith("pref_")) {
-                    // for other standard prefs, do nothing special here.
-                }
-                else {
-                    try {
-                        // they changed a building subscription, add it as a tag.
-                        boolean subscribed = sharedPreferences.getBoolean(key, false);
-                        if (subscribed) {
-                            ETPush.pushManager().addTag(key);
-                        }
-                        else {
-                            ETPush.pushManager().removeTag(key);
-                        }
-                    }
-                    catch(Throwable e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
-            catch (ETException e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
-        }
-    
-        
-    public void reRegister()
-    {
-    	try {
-            if (ETPush.pushManager().isPushEnabled()) {
-                ETPush.pushManager().enablePush(mainActivity);
-            }
-		}
-    	catch (ETException e) {
-    		Log.e(TAG, e.getMessage(), e);
-    	}
-    }
-    
-    public void setTags(String Tags)
-    {
-    	String[] splitTags = Tags.split(",");
-    	for(int i=0; i < splitTags.length; i++)
-    	{
-    		try {
-				ETPush.pushManager().addTag(splitTags[i]);
-			} catch (ETException e) {
-                Log.e(TAG, e.getMessage(), e);
-			}
-    	}
-    }
-    
-	public void ToggleGeoLocation(boolean enabled)
-	{
-		if(enabled)
-		{
-			try {
-                if(!ETLocationManager.locationManager().isWatchingLocation()) {
-                    Log.d(TAG, "Geo enabled");
-                    ETLocationManager.locationManager().startWatchingLocation();
-                }
-			}
-			catch(ETException e) {
-                Log.e(TAG, e.getMessage(), e);
-			}
-		}
-		else
-		{
-			try {
-                if(ETLocationManager.locationManager().isWatchingLocation()) {
-                    Log.d(TAG, "Geo Disbaled");
-                    ETLocationManager.locationManager().stopWatchingLocation();;
-                }
-			}
-			catch(ETException e) {
-                Log.e(TAG, e.getMessage(), e);
-			}
-		}
-	}
-    
-    public void TogglePush(boolean enablePush)
-    {
-        if(enablePush)
-        {
-            // enable push manager
-            try {
-                if(!ETPush.pushManager().isPushEnabled()) {
+        Log.d(TAG, "Preference changed: " + key);
+        try {
+            if ("pref_notify".equals(key)) {
+                boolean pushEnabled = sharedPreferences.getBoolean(key, true);
+                if (pushEnabled) {
                     ETPush.pushManager().enablePush(mainActivity);
                 }
-            }
-            catch (ETException e) {
-                Log.e("catch", e.getMessage(), e);
-            }
-        }
-        else
-        {
-            try {
-                if(ETPush.pushManager().isPushEnabled()) {
+                else {
                     ETPush.pushManager().disablePush(mainActivity);
                 }
             }
-            catch (ETException e) {
-                Log.e("catch", e.getMessage(), e);
+            else if (key.startsWith("pref_")) {
+                // for other standard prefs, do nothing special here.
             }
-            
+            else {
+                try {
+                    // they changed a building subscription, add it as a tag.
+                    boolean subscribed = sharedPreferences.getBoolean(key, false);
+                    if (subscribed) {
+                        ETPush.pushManager().addTag(key);
+                    }
+                    else {
+                        ETPush.pushManager().removeTag(key);
+                    }
+                }
+                catch(Throwable e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+            }
+        }
+        catch (ETException e) {
+            Log.e(TAG, e.getMessage(), e);
         }
     }
-    
-    
-    
+}
+
+public void reRegister()
+{
+try {
+if (ETPush.pushManager().isPushEnabled()) {
+ETPush.pushManager().enablePush(mainActivity);
+}
+}
+catch (ETException e) {
+Log.e(TAG, e.getMessage(), e);
+}
+}
+
+public void setTags(String Tags)
+{
+String[] splitTags = Tags.split(",");
+for(int i=0; i < splitTags.length; i++)
+{
+try {
+ETPush.pushManager().addTag(splitTags[i]);
+} catch (ETException e) {
+Log.e(TAG, e.getMessage(), e);
+}
+}
+}
+
+public void ToggleGeoLocation(boolean enabled)
+{
+if(enabled)
+{
+try {
+if(!ETLocationManager.locationManager().isWatchingLocation()) {
+Log.d(TAG, "Geo enabled");
+ETLocationManager.locationManager().startWatchingLocation();
+}
+}
+catch(ETException e) {
+Log.e(TAG, e.getMessage(), e);
+}
+}
+else
+{
+try {
+if(ETLocationManager.locationManager().isWatchingLocation()) {
+Log.d(TAG, "Geo Disbaled");
+ETLocationManager.locationManager().stopWatchingLocation();;
+}
+}
+catch(ETException e) {
+Log.e(TAG, e.getMessage(), e);
+}
+}
+}
+
+public void TogglePush(boolean enablePush)
+{
+if(enablePush)
+{
+// enable push manager
+try {
+if(!ETPush.pushManager().isPushEnabled()) {
+ETPush.pushManager().enablePush(mainActivity);
+}
+}
+catch (ETException e) {
+Log.e("catch", e.getMessage(), e);
+}
+}
+else
+{
+try {
+if(ETPush.pushManager().isPushEnabled()) {
+ETPush.pushManager().disablePush(mainActivity);
+}
+}
+catch (ETException e) {
+Log.e("catch", e.getMessage(), e);
+}
+
+}
+}
+
+
+
 }
