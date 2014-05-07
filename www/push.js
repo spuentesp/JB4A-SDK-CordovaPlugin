@@ -23,6 +23,7 @@ var exec = require('cordova/exec');
     },
     //add an attribute and set its value
     addAttribute: function(SuccessCallback, errorCallback, name, value) {
+                alert("add " + name + " " + value);
         cordova.exec(successCallback, errorCallback, "ETPush", "addAttributes", []);
     },
     //remove an attribute
