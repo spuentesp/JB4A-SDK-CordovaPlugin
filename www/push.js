@@ -7,43 +7,43 @@ var exec = require('cordova/exec');
     },
     //returns boolean with whether device notifications are active
     isPushEnabled: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "isPushEnabled", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "isPushEnabled", []);
     },
     //set the current subscriber key
     setSubscriberKey: function(SuccessCallback, errorCallback,subscriberKey, value) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "getSubscriberKey", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "getSubscriberKey", []);
     },
     // add a tag 
     addTag: function(SuccessCallback, errorCallback, tag, value) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "addTag", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "addTag", []);
     },
     //remove a tag
     removeTag: function(SuccessCallback, errorCallback, tag) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "removeTag", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "removeTag", []);
     },
     //add an attribute and set its value
     addAttribute: function(SuccessCallback, errorCallback, name, value) {
                 alert("add " + name + " " + value);
-        cordova.exec(successCallback, errorCallback, "ETPush", "addAttributes", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "addAttributes", []);
     },
     //remove an attribute
     removeAttribute: function(SuccessCallback, errorCallback, name) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "removeAttributes", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "removeAttributes", []);
     },
     //enable geolocation
     enableGeolocation: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "enableGeoLocation", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "enableGeoLocation", []);
     },
     //disable geolocation
     disableGeolocation: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "disableGeoLocation", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "disableGeoLocation", []);
     },
     //enable Geolocation
     enablePush: function (SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "enablePush", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "enablePush", []);
     }, 
     //disableGeolocation
     disbalePush: function(SuccessCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "ETPush", "disablePush", []);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "disablePush", []);
     }
 };
