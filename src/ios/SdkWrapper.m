@@ -22,6 +22,7 @@
 
 #import <Cordova/CDV.h>
 #import "SdkWrapper.h"
+#import "ETPush.h"
 
 
 @interface SdkWrapper () {}
@@ -36,34 +37,43 @@
 }
 - (void)isPushEnabled:(CDVInvokedUrlCommand *)command
 {
-    NSLog(@"Test");
-    
+    NSLog(@"testing");
+    CDVPluginResult* pluginResult = nil;
+    BOOL pushEnabled = [ETPush isPushEnabled];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:pushEnabled];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 - (void) setSubscriberKey:(CDVInvokedUrlCommand *)command
 {
     NSString* subKey = [command.arguments objectAtIndex:0];
     NSLog(@"setting sub key %@", subKey);
+    [[ETPush pushManager] setSubscriberKey:subKey];
     
 }
 - (void) addTag:(CDVInvokedUrlCommand *)command
 {
-    NSLog(@"Test");
-    
+    NSString* tag = [command.arguments objectAtIndex:0];
+    [[ETPush pushManager] addTag:tag];
 }
 
 - (void) removeTag:(CDVInvokedUrlCommand *)command
 {
-    NSLog(@"Test");
+    NSString* tag = [command.arguments objectAtIndex:0];
+    [[ETPush pushManager] removeTag:tag];
     
 }
 - (void)addAttribute:(CDVInvokedUrlCommand *)command
 {
-    NSLog(@"Test");
+    NSString* attName = [command.arguments objectAtIndex:0];
+    NSString* attVal = [command.arguments objectAtIndex:1];
+    [[ETPush pushManager] addAttributeNamed:attName
+                                      value:attVal];
     
 }
 - (void) removeAttribute:(CDVInvokedUrlCommand *)command
 {
-    NSLog(@"Test");
+    NSString* attName = [command.arguments objectAtIndex:0];
+    [[ETPush pushManager] removeAttributeNamed:attName];
     
 }
 

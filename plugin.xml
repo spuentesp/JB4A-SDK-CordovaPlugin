@@ -112,6 +112,7 @@
         <header-file src="src/ios/SdkWrapper.h" />
         <source-file src="src/ios/SdkWrapper.m" />
         <source-file src="src/ios/etpushsdk/libetpushsdk-3.1.1.a" framework="true" />
+        <source-file src="src/ios/etpushsdk/libsqlite3.dylib" framework="true" />
         <header-file src="src/ios/etpushsdk/ETLandingPagePresenter.h" />
         <header-file src="src/ios/etpushsdk/ETLocationManager.h" />
         <header-file src="src/ios/etpushsdk/ETPhoneHome.h" />
