@@ -87,7 +87,10 @@
             <!-- ET Service handlers for sending data (required) -->
             <service android:name="com.exacttarget.etpushsdk.ETSendDataIntentService"/>
             
+                       	<!-- ET Google Cloud Messaging Version (required to match GCM jar file) -->
+ 	        <meta-data android:name="com.google.android.gms.version" android:value="4323000"/>
             </config-file>
+
 
         <source-file src="src/android/SdkWrapper.java" target-dir="src/com/exacttarget/hybridPlugin" />
         <source-file src="src/android/cordova-3.5.0-dev.jar" target-dir="libs" />
