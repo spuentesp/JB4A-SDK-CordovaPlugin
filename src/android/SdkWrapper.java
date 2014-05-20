@@ -13,6 +13,7 @@ import com.exacttarget.etpushsdk.ETLocationManager;
 import com.exacttarget.etpushsdk.ETPush;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -21,7 +22,7 @@ import android.util.Log;
 public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChangeListener{
 	
 	private static final String TAG = "SDKWrapper";
-    
+	Context context;
 	public static Activity mainActivity;
     public SdkWrapper () {
         
@@ -35,6 +36,8 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         PluginResult.Status status = PluginResult.Status.OK;
         String result = "";
         Log.v("action", action);
+        if(context == null)
+        	context =this.cordova.getActivity().getApplicationContext();
 		
 		if (action.equals("test")) {
         	float f = 2;
@@ -94,6 +97,10 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
                 Log.e(TAG, e.getMessage(), e);
     		}
         }
+        else if(action.equals("register"))
+        {
+            register();
+        }
         else if(action.equals("setSubscriberKey"))
         {
             try {
@@ -106,7 +113,46 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         else {
             return false;
         }
+        try {
+			ETPush.pushManager().enablePush(null);
+		} catch (ETException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         return true;
+    }
+    
+    public void register()
+    {
+    	context =this.cordova.getActivity().getApplicationContext();
+        try {
+        	ETPush.setLogLevel(Log.DEBUG);
+            //This method sets up the ExactTarget mobile push system
+            ETPush.readyAimFire(context, "8dd3c0b3-bdbf-4bb8-8ddc-73bddba010a4",
+                                "7sq6z6g83rwgbjbqe3ddpysa", false, false, false);
+            ETPush pushManager = ETPush.pushManager();
+            pushManager.setGcmSenderID("5671317166");
+            //A good practice is to add the versionName of your app from the manifest as a tag
+            //so you can target specific app versions with a push message later if necessary.
+            //String versionName = getPackageManager().getPackageInfo(getPackageName(),
+            //0).versionName;
+            //pushManager.addTag(versionName);
+        }
+        catch (ETException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        
+        // enable push manager
+        try {
+            if(!ETPush.pushManager().isPushEnabled()) {
+                ETPush.pushManager().enablePush(null);
+            }
+        }
+        catch (ETException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        
     }
     
 	@Override
