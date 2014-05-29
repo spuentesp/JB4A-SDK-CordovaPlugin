@@ -11,7 +11,7 @@ var exec = require('cordova/exec');
     },
     //set the current subscriber key
     setSubscriberKey: function(SuccessCallback, errorCallback,subscriberKey, value) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "getSubscriberKey", [subscriberKey, value);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "getSubscriberKey", [subscriberKey, value]);
     },
     // add a tag 
     addTag: function(SuccessCallback, errorCallback, tag) {
@@ -45,5 +45,8 @@ var exec = require('cordova/exec');
     //disableGeolocation
     disbalePush: function(SuccessCallback, errorCallback) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "disablePush", []);
-    }
+    },
+    register: function(SuccessCallback, errorCallback, analytics, locaiton) {
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "register", [analytics, location]);
+    },
 };

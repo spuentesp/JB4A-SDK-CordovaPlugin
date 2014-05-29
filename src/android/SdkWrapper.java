@@ -16,7 +16,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
 import android.util.Log;
 
 public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChangeListener{
@@ -99,7 +102,9 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         }
         else if(action.equals("register"))
         {
-            register();
+        	Boolean analytics = Boolean.parseBoolean(args.getString(1));
+        	Boolean loc = Boolean.parseBoolean(args.getString(1));
+            register(analytics,loc);
         }
         else if(action.equals("setSubscriberKey"))
         {
@@ -114,7 +119,10 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
             return false;
         }
         try {
-			ETPush.pushManager().enablePush(null);
+        	if(ETPush.pushManager().isPushEnabled())
+        		ETPush.pushManager().enablePush(null);
+        	else
+        		ETPush.pushManager().disablePush(null);
 		} catch (ETException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,16 +131,21 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         return true;
     }
     
-    public void register()
+    public void register(Boolean location, Boolean analytics)
     {
     	context =this.cordova.getActivity().getApplicationContext();
+    	Bundle bundle = context.getApplicationInfo().metaData;
+        
         try {
         	ETPush.setLogLevel(Log.DEBUG);
             //This method sets up the ExactTarget mobile push system
-            ETPush.readyAimFire(context, "8dd3c0b3-bdbf-4bb8-8ddc-73bddba010a4",
-                                "7sq6z6g83rwgbjbqe3ddpysa", false, false, false);
+        	String appID = bundle.getString("ETApplicationID");
+        	String accessToken = bundle.getString("ETAccessToken");
+        	String gcmSenderID = bundle.getString("GCMSenderID");
+            ETPush.readyAimFire(context, appID,
+                                accessToken, analytics, location, false);
             ETPush pushManager = ETPush.pushManager();
-            pushManager.setGcmSenderID("5671317166");
+            pushManager.setGcmSenderID(gcmSenderID);
             //A good practice is to add the versionName of your app from the manifest as a tag
             //so you can target specific app versions with a push message later if necessary.
             //String versionName = getPackageManager().getPackageInfo(getPackageName(),
