@@ -31,6 +31,7 @@
 - (void)removeTag:(CDVInvokedUrlCommand*)command;
 - (void)addAttribute:(CDVInvokedUrlCommand*)command;
 - (void)removeAttribute:(CDVInvokedUrlCommand*)command;
+- (void)resetBadgeCount:(CDVInvokedUrlCommand*)command;
 
 
 @end

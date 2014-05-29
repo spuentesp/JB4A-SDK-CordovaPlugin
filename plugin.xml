@@ -16,8 +16,15 @@
         <clobbers target="ETPush" />
     </js-module>
 
+<preference name="DEVAPPID" />
+<preference name="DEVACCESSTOKEN" />
+<preference name="PRODAPPID" />
+<preference name="PRODACCESSTOKEN" />
+<preference name="ANDROIDAPPID" />
+<preference name="ANDROIDACCESSTOKEN" />
+<preference name="GCMSENDERID" />
 
-    <!-- android -->
+<!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ETPush" >
@@ -89,9 +96,9 @@
             
                        	<!-- ET Google Cloud Messaging Version (required to match GCM jar file) -->
  	        <meta-data android:name="com.google.android.gms.version" android:value="4323000"/>
-            <meta-data android:name="ETApplicationID" android:value="f2f60bbe-ddbb-4043-b4f7-144c9ddbba54" />
-            <meta-data android:name="ETAccessToken" android:value="rqsu6htzqw6yh36rqgcvkmk5" />
-            <meta-data android:name="GCMSenderID" android:value="1072913718575" />
+            <meta-data android:name="ETApplicationID" android:value="$ANDROIDAPPID" />
+            <meta-data android:name="ETAccessToken" android:value="$ANDROIDACCESSTOKEN" />
+            <meta-data android:name="GCMSenderID" android:value="$GCMSENDERID" />
             </config-file>
 
 
@@ -113,13 +120,13 @@
         <config-file target="*-Info.plist" parent="ETAppSettings">
                 <dict>
                     <key>ApplicationID-Dev</key>
-                    <string>427c085f-5358944f2-a8f7-bbc5150c77c5</string>
+                    <string>$DEVAPPID</string>
                     <key>AccessToken-Dev</key>
-                    <string>yay73bzx6eygw8ypaqr67fvt</string>
+                    <string>$DEVACCESSTOKEN</string>
                     <key>ApplicationID-Prod</key>
-                    <string>35a19ebc-50ae-4ed5-9d6c-404290ada3cd</string>
+                    <string>$PRODAPPID</string>
                     <key>AccessToken-Prod</key>
-                    <string>cghknp9rjrmk9pkf6qh392u3</string>
+                    <string>$PRODACCESSTOKEN</string>
                     <key>UseGeofences</key>
                     <false></false>
                     <key>UseAnalytics</key>
@@ -134,7 +141,6 @@
         <header-file src="src/ios/SdkWrapper.h" />
         <source-file src="src/ios/SdkWrapper.m" />
         <source-file src="src/ios/etpushsdk/libetpushsdk-3.1.1.a" framework="true" />
-        <source-file src="src/ios/etpushsdk/libsqlite3.0.dylib" framework="true" />
         <header-file src="src/ios/etpushsdk/ETLandingPagePresenter.h" />
         <header-file src="src/ios/etpushsdk/ETLocationManager.h" />
         <header-file src="src/ios/etpushsdk/ETPhoneHome.h" />
@@ -152,6 +158,9 @@
         <header-file src="src/ios/etpushsdk/Region.h" />
         <header-file src="src/ios/etpushsdk/Registration.h" />
         <header-file src="src/ios/etpushsdk/StatsUpdate.h" />
+        
+        <framework src="libsqlite3.dylib" />
+
     </platform>
 
 

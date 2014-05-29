@@ -77,6 +77,12 @@
     
 }
 
+- (void) resetBadgeCount:(CDVInvokedUrlCommand *)command
+{
+    [[ETPush pushManager] resetBadgeCount];
+}
+
+
 
 
 @end

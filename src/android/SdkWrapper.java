@@ -14,15 +14,10 @@ import com.exacttarget.etpushsdk.ETPush;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 
-public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChangeListener{
+public class SdkWrapper extends CordovaPlugin {
 	
 	private static final String TAG = "SDKWrapper";
 	Context context;
@@ -39,6 +34,7 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         PluginResult.Status status = PluginResult.Status.OK;
         String result = "";
         Log.v("action", action);
+        boolean reRegisterDevice = true;
         if(context == null)
         	context =this.cordova.getActivity().getApplicationContext();
 		
@@ -50,18 +46,22 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         else if(action.equals("enablePush"))
         {
             TogglePush(true);
+            reRegisterDevice = false;
         }
         else if(action.equals("disablePush"))
         {
             TogglePush(false);
+            reRegisterDevice = false;
         }
         else if(action.equals("enableGeoLocation"))
         {
         	ToggleGeoLocation(true);
+            reRegisterDevice = false;
         }
         else if(action.equals("disableGeoLocation"))
         {
         	ToggleGeoLocation(false);
+            reRegisterDevice = false;
         }
         else if(action.equals("addAttributes"))
         {
@@ -118,14 +118,17 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         else {
             return false;
         }
-        try {
-        	if(ETPush.pushManager().isPushEnabled())
-        		ETPush.pushManager().enablePush(null);
-        	else
-        		ETPush.pushManager().disablePush(null);
-		} catch (ETException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(reRegisterDevice)
+		{
+	        try {
+	        	if(ETPush.pushManager().isPushEnabled())
+	        		ETPush.pushManager().enablePush(null);
+	        	else
+	        		ETPush.pushManager().disablePush(null);
+			} catch (ETException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
         
         return true;
@@ -141,7 +144,7 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
             //This method sets up the ExactTarget mobile push system
         	String appID = bundle.getString("ETApplicationID");
         	String accessToken = bundle.getString("ETAccessToken");
-        	String gcmSenderID = bundle.getString("GCMSenderID");
+        	String gcmSenderID = Integer.toString(bundle.getInt("GCMSenderID"));
             ETPush.readyAimFire(context, appID,
                                 accessToken, analytics, location, false);
             ETPush pushManager = ETPush.pushManager();
@@ -168,70 +171,7 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
         
     }
     
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                          String key) {
-        Log.d(TAG, "Preference changed: " + key);
-        try {
-            if ("pref_notify".equals(key)) {
-                boolean pushEnabled = sharedPreferences.getBoolean(key, true);
-                if (pushEnabled) {
-                    ETPush.pushManager().enablePush(mainActivity);
-                }
-                else {
-                    ETPush.pushManager().disablePush(mainActivity);
-                }
-            }
-            else if (key.startsWith("pref_")) {
-                // for other standard prefs, do nothing special here.
-            }
-            else {
-                try {
-                    // they changed a building subscription, add it as a tag.
-                    boolean subscribed = sharedPreferences.getBoolean(key, false);
-                    if (subscribed) {
-                        ETPush.pushManager().addTag(key);
-                    }
-                    else {
-                        ETPush.pushManager().removeTag(key);
-                    }
-                }
-                catch(Throwable e) {
-                    Log.e(TAG, e.getMessage(), e);
-                }
-            }
-        }
-        catch (ETException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-    }
-    
-    
-    public void reRegister()
-    {
-        try {
-            if (ETPush.pushManager().isPushEnabled()) {
-                ETPush.pushManager().enablePush(mainActivity);
-            }
-        }
-        catch (ETException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-    }
-    
-    public void setTags(String Tags)
-    {
-        String[] splitTags = Tags.split(",");
-        for(int i=0; i < splitTags.length; i++)
-        {
-            try {
-                ETPush.pushManager().addTag(splitTags[i]);
-            } catch (ETException e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
-        }
-    }
-    
+	
     public void ToggleGeoLocation(boolean enabled)
     {
         if(enabled)
@@ -287,7 +227,5 @@ public class SdkWrapper extends CordovaPlugin implements OnSharedPreferenceChang
             
         }
     }
-    
-    
     
 }
