@@ -362,7 +362,37 @@
             
             <div class="content"><div class='highlight'><pre>    register: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, analytics, locaiton)</span> {</span>
         cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"register"</span>, [analytics, location]);
-    },
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>IOS ONLY resets the badge count</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <pre><code>ETPush.resetBadgeCount(success, error);
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    resetBadgeCount: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+         cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"resetBadgeCount"</span>, []);       
+    },   
 };</pre></div></div>
             
         </li>
