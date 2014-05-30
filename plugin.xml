@@ -23,6 +23,8 @@
 <preference name="ANDROIDAPPID" />
 <preference name="ANDROIDACCESSTOKEN" />
 <preference name="GCMSENDERID" />
+<preference name="USEGEO" />
+<preference name="USEANALYTICS" />
 
 <!-- android -->
     <platform name="android">
@@ -128,9 +130,9 @@
                     <key>AccessToken-Prod</key>
                     <string>$PRODACCESSTOKEN</string>
                     <key>UseGeofences</key>
-                    <false></false>
+                    <string>$USEGEO</string>
                     <key>UseAnalytics</key>
-                    <false/>
+                    <string>$USEANALYTICS</string>
                 </dict>
         </config-file>
         <config-file target="config.xml" parent="/*">
