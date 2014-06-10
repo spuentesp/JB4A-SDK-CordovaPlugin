@@ -64,7 +64,7 @@ var exec = require('cordova/exec');
     //ANDROID ONLY MUST FIRE BEFORE OTHER FUNCTIONS CAN BE CALLED fire first time device registration setup 
 
 //      ETPush.register(success, error, true, true);
-    register: function(SuccessCallback, errorCallback, analytics, locaiton) {
+    register: function(SuccessCallback, errorCallback, analytics, location) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "register", [analytics, location]);
     },
 
