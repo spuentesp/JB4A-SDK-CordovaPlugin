@@ -57,13 +57,17 @@
         </config-file>
         
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!-- activity that handles message reception and forwarding -->
+            <activity android:name="com.exacttarget.hybridPlugin.PushNotificationRecipient">
+            </activity>
             <!-- ET Broadcast Receiver for handling push messages. -->
             <receiver android:name="com.exacttarget.etpushsdk.ET_GenericReceiver" android:permission="com.google.android.c2dm.permission.SEND">
                 <intent-filter>
-                    <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                    <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                    <category android:name="$PACKAGE_NAME"/>
-                </intent-filter> </receiver>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                    <category android:name="com.exacttarget.internal.orangehybrid" />
+                </intent-filter>
+            </receiver>
             <!-- ET Broadcast Receivers for for sending data (required) -->
             <receiver android:name="com.exacttarget.etpushsdk.ETSendDataReceiver"/>
             

@@ -1,5 +1,7 @@
 package com.exacttarget.hybridPlugin;
 
+import java.util.Iterator;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -7,6 +9,7 @@ import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.exacttarget.etpushsdk.ETException;
 import com.exacttarget.etpushsdk.ETLocationManager;
@@ -21,13 +24,17 @@ public class SdkWrapper extends CordovaPlugin {
 	
 	private static final String TAG = "SDKWrapper";
 	Context context;
+	
 	public static Activity mainActivity;
+	private static CordovaWebView gWebView;
+	public static String notificationCallBack;
     public SdkWrapper () {
         
     }
     
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize((CordovaInterface) cordova, webView);
+        gWebView = webView;
     }
 	
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -38,11 +45,11 @@ public class SdkWrapper extends CordovaPlugin {
         if(context == null)
         	context =this.cordova.getActivity().getApplicationContext();
 		
-		if (action.equals("test")) {
-        	float f = 2;
-        	callbackContext.sendPluginResult(new PluginResult(status, f));
-            return true;
-        }
+		if(action.equals("registerForNotifications"))
+		{
+			notificationCallBack = args.getString(0);
+			Log.v("notification registered with: ", notificationCallBack);
+		}
         else if(action.equals("enablePush"))
         {
             TogglePush(true);
@@ -66,6 +73,7 @@ public class SdkWrapper extends CordovaPlugin {
         else if(action.equals("addAttributes"))
         {
         	Log.v("console", args.getString(0) + args.getString(1));
+        	gWebView.sendJavascript(notificationCallBack);
     		try {
                 ETPush.pushManager().addAttribute(args.getString(0), args.getString(1));
     		}
@@ -102,8 +110,9 @@ public class SdkWrapper extends CordovaPlugin {
         }
         else if(action.equals("register"))
         {
-        	Boolean analytics = Boolean.parseBoolean(args.getString(1));
-        	Boolean loc = Boolean.parseBoolean(args.getString(1));
+        	//Log.v("console", args.getBoolean(0) + args.getBoolean(1));
+        	Boolean analytics = args.getBoolean(0);
+        	Boolean loc =  args.getBoolean(1);
             register(analytics,loc);
         }
         else if(action.equals("setSubscriberKey"))
@@ -144,10 +153,11 @@ public class SdkWrapper extends CordovaPlugin {
             //This method sets up the ExactTarget mobile push system
         	String appID = bundle.getString("ETApplicationID");
         	String accessToken = bundle.getString("ETAccessToken");
-        	String gcmSenderID = Integer.toString(bundle.getInt("GCMSenderID"));
+        	String gcmSenderID = "5671317166";//bundle.getInt("GCMSenderID");
             ETPush.readyAimFire(context, appID,
                                 accessToken, analytics, location, false);
             ETPush pushManager = ETPush.pushManager();
+            pushManager.setNotificationRecipientClass(PushNotificationRecipient.class);
             pushManager.setGcmSenderID(gcmSenderID);
             //A good practice is to add the versionName of your app from the manifest as a tag
             //so you can target specific app versions with a push message later if necessary.
@@ -170,7 +180,6 @@ public class SdkWrapper extends CordovaPlugin {
         }
         
     }
-    
 	
     public void ToggleGeoLocation(boolean enabled)
     {
@@ -227,5 +236,13 @@ public class SdkWrapper extends CordovaPlugin {
             
         }
     }
+    
+    public static void sendPushPayload(JSONObject json)
+    {
+    	String callBack = "javascript:" + notificationCallBack + "(" + json.toString() + ")";
+    	Log.v(TAG, callBack);
+    	gWebView.sendJavascript(callBack);
+    }
+    
     
 }

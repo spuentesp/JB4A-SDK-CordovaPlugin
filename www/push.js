@@ -67,6 +67,10 @@ var exec = require('cordova/exec');
     register: function(SuccessCallback, errorCallback, analytics, location) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "register", [analytics, location]);
     },
+    registerForNotifications: function(SuccessCallback, errorCallback, notifcationRecipient)
+    {
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "registerForNotifications", [notifcationRecipient]);
+    },
 
     //IOS ONLY resets the badge count
 
