@@ -360,7 +360,7 @@
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    register: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, analytics, locaiton)</span> {</span>
+            <div class="content"><div class='highlight'><pre>    register: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, analytics, location)</span> {</span>
         cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"register"</span>, [analytics, location]);
     },</pre></div></div>
             
@@ -373,7 +373,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>IOS ONLY resets the badge count</p>
+              <p>Set a js function as a callback for when you receive a notification</p>
 
             </div>
             
@@ -385,6 +385,47 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <pre><code> ETPush.registerForNotifications: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(success, error, onNotificationCallBack)</span>
+ <span class="hljs-title">iOS</span>:
+ <span class="hljs-title">onNotificationCallBack</span><span class="hljs-params">(payload)</span> {</span>
+     example payload = <span class="hljs-string">"{"</span>aps<span class="hljs-string">":{"</span>badge<span class="hljs-string">":5,"</span>sound<span class="hljs-string">":"</span><span class="hljs-keyword">default</span><span class="hljs-string">","</span>alert<span class="hljs-string">":"</span>test<span class="hljs-string">"},"</span>testKey<span class="hljs-string">":"</span>test<span class="hljs-string">","</span>_m<span class="hljs-string">":"</span>ODc6MTE0OjA<span class="hljs-string">"}"</span>;
+     parse the above payload <span class="hljs-keyword">for</span> the keys you are looking <span class="hljs-keyword">for</span>
+ }
+ Android:
+ onNotificationCallBack(payload) {
+     payload is key value pairs json
+    payload.testKey 
+ }
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    registerForNotifications: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, notifcationRecipient)</span>
+    {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"registerForNotifications"</span>, [notifcationRecipient]);
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>IOS ONLY resets the badge count</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <pre><code>ETPush.resetBadgeCount(success, error);
 </code></pre>
