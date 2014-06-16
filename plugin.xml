@@ -101,7 +101,7 @@
             
                        	<!-- ET Google Cloud Messaging Version (required to match GCM jar file) -->
  	        <meta-data android:name="com.google.android.gms.version" android:value="4323000"/>
-            <meta-data android:name="ETApplicationID_dev" android:value="@string/et_access_token_dev" />
+            <meta-data android:name="ETApplicationID_dev" android:value="@string/et_app_id_dev" />
             <meta-data android:name="ETAccessToken_dev" android:value="@string/et_access_token_dev" />
             <meta-data android:name="GCMSenderID_dev" android:value="@string/gcm_sender_id_dev" />
             <meta-data android:name="ETApplicationID_prod" android:value="@string/et_app_id_prod" />
