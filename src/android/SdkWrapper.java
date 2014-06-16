@@ -153,12 +153,13 @@ public class SdkWrapper extends CordovaPlugin {
             //This method sets up the ExactTarget mobile push system
         	String appID = bundle.getString("ETApplicationID");
         	String accessToken = bundle.getString("ETAccessToken");
-        	String gcmSenderID = "5671317166";//bundle.getInt("GCMSenderID");
+        	String gcmSenderID = bundle.getString("GCMSenderID");
             ETPush.readyAimFire(context, appID,
                                 accessToken, analytics, location, false);
             ETPush pushManager = ETPush.pushManager();
             pushManager.setNotificationRecipientClass(PushNotificationRecipient.class);
             pushManager.setGcmSenderID(gcmSenderID);
+            Log.d(TAG,gcmSenderID);
             //A good practice is to add the versionName of your app from the manifest as a tag
             //so you can target specific app versions with a push message later if necessary.
             //String versionName = getPackageManager().getPackageInfo(getPackageName(),
