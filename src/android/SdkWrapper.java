@@ -17,6 +17,7 @@ import com.exacttarget.etpushsdk.ETPush;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,6 +26,7 @@ public class SdkWrapper extends CordovaPlugin {
 	private static final String TAG = "SDKWrapper";
 	Context context;
 	
+	private static boolean isActive;
 	public static Activity mainActivity;
 	private static CordovaWebView gWebView;
 	public static String notificationCallBack;
@@ -149,22 +151,30 @@ public class SdkWrapper extends CordovaPlugin {
     	Bundle bundle = context.getApplicationInfo().metaData;
         
         try {
-        	ETPush.setLogLevel(Log.DEBUG);
             //This method sets up the ExactTarget mobile push system
-        	String appID = bundle.getString("ETApplicationID");
-        	String accessToken = bundle.getString("ETAccessToken");
-        	String gcmSenderID = bundle.getString("GCMSenderID");
+        	boolean isDebuggable =  ( 0 != ( context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
+        	String appID;
+        	String accessToken;
+        	String gcmSenderID;
+            
+            if (isDebuggable) {
+            	ETPush.setLogLevel(Log.DEBUG);
+            	appID = bundle.getString("ETApplicationID_dev");
+            	accessToken = bundle.getString("ETAccessToken_dev");
+            	gcmSenderID = bundle.getString("GCMSenderID_dev");
+            }
+            else
+            {
+            	appID = bundle.getString("ETApplicationID_prod");
+            	accessToken = bundle.getString("ETAccessToken_prod");
+            	gcmSenderID = bundle.getString("GCMSenderID_prod");
+            }
+        	isActive = true;
             ETPush.readyAimFire(context, appID,
                                 accessToken, analytics, location, false);
             ETPush pushManager = ETPush.pushManager();
             pushManager.setNotificationRecipientClass(PushNotificationRecipient.class);
             pushManager.setGcmSenderID(gcmSenderID);
-            Log.d(TAG,gcmSenderID);
-            //A good practice is to add the versionName of your app from the manifest as a tag
-            //so you can target specific app versions with a push message later if necessary.
-            //String versionName = getPackageManager().getPackageInfo(getPackageName(),
-            //0).versionName;
-            //pushManager.addTag(versionName);
         }
         catch (ETException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -245,5 +255,10 @@ public class SdkWrapper extends CordovaPlugin {
     	gWebView.sendJavascript(callBack);
     }
     
+    
+    public static boolean isActive()
+    {
+    	return isActive;
+    }
     
 }
