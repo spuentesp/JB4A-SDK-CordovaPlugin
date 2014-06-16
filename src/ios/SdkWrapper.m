@@ -30,11 +30,14 @@
 
 @implementation SdkWrapper
 
-- (void)test:(CDVInvokedUrlCommand*)command
-{
-    NSLog(@"Test");
+static NSString *notificationCallback;
+static SdkWrapper *etPluginInstance;
+
++ (SdkWrapper *) etPlugin {
     
+    return etPluginInstance;
 }
+
 - (void)isPushEnabled:(CDVInvokedUrlCommand *)command
 {
     NSLog(@"testing");
@@ -82,7 +85,20 @@
     [[ETPush pushManager] resetBadgeCount];
 }
 
+- (void) registerForNotifications:(CDVInvokedUrlCommand *)command
+{
+    notificationCallback = [command.arguments objectAtIndex:0];
+    etPluginInstance = self;
+}
 
+-(void) notifyOfMessage:(NSData *)payload
+{
+    NSString *JSONString = [[NSString alloc] initWithBytes:[payload bytes] length:[payload length] encoding:NSUTF8StringEncoding];
+    NSString * notifyJS = [NSString stringWithFormat:@"%@('%@');", notificationCallback, JSONString];
+    NSLog(@"stringByEvaluatingJavaScriptFromString %@", notifyJS);
+    
+    NSString *jsResults = [self.webView stringByEvaluatingJavaScriptFromString:notifyJS];
+}
 
 
 @end

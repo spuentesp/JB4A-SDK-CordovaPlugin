@@ -20,9 +20,8 @@
 <preference name="DEVACCESSTOKEN" />
 <preference name="PRODAPPID" />
 <preference name="PRODACCESSTOKEN" />
-<preference name="ANDROIDAPPID" />
-<preference name="ANDROIDACCESSTOKEN" />
-<preference name="GCMSENDERID" />
+<preference name="GCMSENDERIDDEV" />
+<preference name="GCMSENDERIDPROD" />
 <preference name="USEGEO" />
 <preference name="USEANALYTICS" />
 
@@ -102,15 +101,21 @@
             
                        	<!-- ET Google Cloud Messaging Version (required to match GCM jar file) -->
  	        <meta-data android:name="com.google.android.gms.version" android:value="4323000"/>
-            <meta-data android:name="ETApplicationID" android:value="@string/et_app_id" />
-            <meta-data android:name="ETAccessToken" android:value="@string/et_access_token" />
-            <meta-data android:name="GCMSenderID" android:value="@string/gcm_sender_id" />
+            <meta-data android:name="ETApplicationID_dev" android:value="@string/et_access_token_dev" />
+            <meta-data android:name="ETAccessToken_dev" android:value="@string/et_access_token_dev" />
+            <meta-data android:name="GCMSenderID_dev" android:value="@string/gcm_sender_id_dev" />
+            <meta-data android:name="ETApplicationID_prod" android:value="@string/et_app_id_prod" />
+            <meta-data android:name="ETAccessToken_prod" android:value="@string/et_access_token_prod" />
+            <meta-data android:name="GCMSenderID_prod" android:value="@string/gcm_sender_id_prod" />
             </config-file>
 
         <config-file target="res/values/strings.xml" parent="/resources">
-           <string name="et_app_id">$ANDROIDAPPID</string>
-            <string name="et_access_token">$ANDROIDACCESSTOKEN</string>
-            <string name="gcm_sender_id">$GCMSENDERID</string>
+           <string name="et_app_id_dev">$DEVAPPID</string>
+            <string name="et_access_token_dev">$DEVACCESSTOKEN</string>
+            <string name="gcm_sender_id_dev">$GCMSENDERIDDEV</string>
+            <string name="et_app_id_prod">$PRODAPPID</string>
+            <string name="et_access_token_prod">$PRODACCESSTOKEN</string>
+            <string name="gcm_sender_id_prod">$GCMSENDERIDPROD</string>
  		  </config-file>
 
         <source-file src="src/android/SdkWrapper.java" target-dir="src/com/exacttarget/hybridPlugin" />

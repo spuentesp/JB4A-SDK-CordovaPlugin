@@ -67,6 +67,19 @@ var exec = require('cordova/exec');
     register: function(SuccessCallback, errorCallback, analytics, location) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "register", [analytics, location]);
     },
+    //Set a js function as a callback for when you receive a notification
+
+//      ETPush.registerForNotifications: function(success, error, onNotificationCallBack)
+//      iOS:
+//      onNotificationCallBack(payload) {
+//          example payload = "{"aps":{"badge":5,"sound":"default","alert":"test"},"testKey":"test","_m":"ODc6MTE0OjA"}";
+//          parse the above payload for the keys you are looking for
+//      }
+//      Android:
+//      onNotificationCallBack(payload) {
+//          payload is key value pairs json
+ //         payload.testKey 
+//      }
     registerForNotifications: function(SuccessCallback, errorCallback, notifcationRecipient)
     {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "registerForNotifications", [notifcationRecipient]);
