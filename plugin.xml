@@ -95,7 +95,6 @@
             <!-- ET Service handlers for handling location updates -->
             <service android:name="com.exacttarget.etpushsdk.ETLocationTimeoutService"/>
             <service android:name="com.exacttarget.etpushsdk.ETLocationWakeupService"/>
-            <service android:name="com.exacttarget.etpushsdk.ETLocationProviderChangeService"/>
             <service android:name="com.exacttarget.etpushsdk.ETGeofenceIntentService"/>
             
             <!-- ET Service handlers for sending data (required) -->
