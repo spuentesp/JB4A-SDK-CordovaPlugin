@@ -21,8 +21,11 @@
 #import <Cordova/CDVPlugin.h>
 
 @interface SdkWrapper : CDVPlugin
-{}
+{
+    //NSString *notificationCallBack;
+}
 
++ (SdkWrapper *) etPlugin;
 
 - (void)test:(CDVInvokedUrlCommand*)command;
 - (void)isPushEnabled:(CDVInvokedUrlCommand*)command;
@@ -32,6 +35,7 @@
 - (void)addAttribute:(CDVInvokedUrlCommand*)command;
 - (void)removeAttribute:(CDVInvokedUrlCommand*)command;
 - (void)resetBadgeCount:(CDVInvokedUrlCommand*)command;
-
+- (void)registerForNotifications:(CDVInvokedUrlCommand*)command;
+- (void)notifyOfMessage:(NSData*) payload;
 
 @end
