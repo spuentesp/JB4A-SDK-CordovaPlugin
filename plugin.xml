@@ -119,7 +119,7 @@
  		  </config-file>
 
         <source-file src="src/android/SdkWrapper.java" target-dir="src/com/exacttarget/hybridPlugin" />
-        <source-file src="src/android/cordova-3.5.0-dev.jar" target-dir="libs" />
+        <source-file src="src/android/PushNotificationRecipient.java" target-dir="src/com/exacttarget/hybridPlugin" />
         <source-file src="src/android/etsdk-3.1.2.jar" target-dir="libs" />
         <source-file src="src/android/google-play-services-16.0.0.jar" target-dir="libs" />
         <source-file src="src/android/jackson-annotations-2.2.3.jar" target-dir="libs" />

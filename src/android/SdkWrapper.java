@@ -103,11 +103,11 @@ public class SdkWrapper extends CordovaPlugin {
 				Log.e(TAG, e.getMessage(), e);
 			}
 		}
-		else if (action.equals("register")) {
+		else if (action.equals("initApp")) {
 			//Log.v("console", args.getBoolean(0) + args.getBoolean(1));
 			Boolean analytics = args.getBoolean(0);
 			Boolean loc = args.getBoolean(1);
-			register(analytics, loc);
+			initApp(analytics, loc);
 		}
 		else if (action.equals("setSubscriberKey")) {
 			try {
@@ -137,47 +137,49 @@ public class SdkWrapper extends CordovaPlugin {
 		return true;
 	}
 
-	public void register(Boolean location, Boolean analytics) {
-		//This method sets up the ExactTarget mobile push system
+	public void initApp(Boolean location, Boolean analytics) {
 
-		context = this.cordova.getActivity().getApplicationContext();
-		try {
-			Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
-			boolean isDebuggable = (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-			String appID;
-			String accessToken;
-			String gcmSenderID;
+		if (!isActive()) {
+			//This method sets up the ExactTarget mobile push system (once for each app)
+			context = this.cordova.getActivity().getApplicationContext();
+			try {
+				Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+				boolean isDebuggable = (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+				String appID;
+				String accessToken;
+				String gcmSenderID;
 
-			if (isDebuggable) {
-				ETPush.setLogLevel(Log.DEBUG);
-				appID = bundle.getString("ETApplicationID_dev");
-				accessToken = bundle.getString("ETAccessToken_dev");
-				gcmSenderID = bundle.getString("GCMSenderID_dev");
+				if (isDebuggable) {
+					ETPush.setLogLevel(Log.DEBUG);
+					appID = bundle.getString("ETApplicationID_dev");
+					accessToken = bundle.getString("ETAccessToken_dev");
+					gcmSenderID = bundle.getString("GCMSenderID_dev");
+				}
+				else {
+					appID = bundle.getString("ETApplicationID_prod");
+					accessToken = bundle.getString("ETAccessToken_prod");
+					gcmSenderID = bundle.getString("GCMSenderID_prod");
+				}
+				isActive = true;
+				ETPush.readyAimFire(context, appID,
+						accessToken, analytics, location, false);
+				ETPush pushManager = ETPush.pushManager();
+				pushManager.setNotificationRecipientClass(PushNotificationRecipient.class);
+				pushManager.setGcmSenderID(gcmSenderID);
 			}
-			else {
-				appID = bundle.getString("ETApplicationID_prod");
-				accessToken = bundle.getString("ETAccessToken_prod");
-				gcmSenderID = bundle.getString("GCMSenderID_prod");
+			catch (Exception e) {
+				Log.e(TAG, e.getMessage(), e);
 			}
-			isActive = true;
-			ETPush.readyAimFire(context, appID,
-					accessToken, analytics, location, false);
-			ETPush pushManager = ETPush.pushManager();
-			pushManager.setNotificationRecipientClass(PushNotificationRecipient.class);
-			pushManager.setGcmSenderID(gcmSenderID);
-		}
-		catch (Exception e) {
-			Log.e(TAG, e.getMessage(), e);
-		}
 
-		// enable push manager
-		try {
-			if (!ETPush.pushManager().isPushEnabled()) {
-				ETPush.pushManager().enablePush(null);
+			// enable push manager
+			try {
+				if (!ETPush.pushManager().isPushEnabled()) {
+					ETPush.pushManager().enablePush(null);
+				}
 			}
-		}
-		catch (ETException e) {
-			Log.e(TAG, e.getMessage(), e);
+			catch (ETException e) {
+				Log.e(TAG, e.getMessage(), e);
+			}
 		}
 
 	}
@@ -242,5 +244,4 @@ public class SdkWrapper extends CordovaPlugin {
 	public static boolean isActive() {
 		return isActive;
 	}
-
 }
