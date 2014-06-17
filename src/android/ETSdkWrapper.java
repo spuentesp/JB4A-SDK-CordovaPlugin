@@ -23,39 +23,41 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class ETSdkWrapper extends CordovaPlugin {
-    
+
 	private static final String TAG = "ETSDKWrapper";
 	Context context;
-    
+
 	private static boolean isActive;
 	public static Activity mainActivity;
 	private static CordovaWebView gWebView;
 	public static String notificationCallBack;
-    
+
 	public ETSdkWrapper() {
-        
+
 	}
-    
+
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize((CordovaInterface) cordova, webView);
 		gWebView = webView;
 	}
-    
-	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+
+	@Override
+	public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
 		PluginResult.Status status = PluginResult.Status.OK;
 		String result = "";
-		Log.v("action", action);
+		if (ETPush.getLogLevel() <= Log.DEBUG) {
+			Log.d(TAG, "action: "+ action);
+		}
+
 		boolean reRegisterDevice = true;
 		if (context == null)
 			context = this.cordova.getActivity().getApplicationContext();
-        
+
 		if (action.equals("registerForNotifications")) {
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
 			notificationCallBack = args.getString(0);
-			Log.v("notification registered with: ", notificationCallBack);
-                }
-            });
+			if (ETPush.getLogLevel() <= Log.DEBUG) {
+				Log.d(TAG, "notification registered with: " + notificationCallBack);
+			}
 		}
 		else if (action.equals("enablePush")) {
 			TogglePush(true);
@@ -78,7 +80,9 @@ public class ETSdkWrapper extends CordovaPlugin {
 				ETPush.pushManager().addAttribute(args.getString(0), args.getString(1));
 			}
 			catch (ETException e) {
-				Log.e(TAG, e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 		else if (action.equals("removeAttribute")) {
@@ -86,7 +90,9 @@ public class ETSdkWrapper extends CordovaPlugin {
 				ETPush.pushManager().removeAttribute(args.getString(0));
 			}
 			catch (ETException e) {
-				Log.e(TAG, e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 		else if (action.equals("addTag")) {
@@ -94,7 +100,9 @@ public class ETSdkWrapper extends CordovaPlugin {
 				ETPush.pushManager().addTag(args.getString(0));
 			}
 			catch (ETException e) {
-				Log.e(TAG, e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 		else if (action.equals("removeTag")) {
@@ -102,118 +110,142 @@ public class ETSdkWrapper extends CordovaPlugin {
 				ETPush.pushManager().removeTag(args.getString(0));
 			}
 			catch (ETException e) {
-				Log.e(TAG, e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
-		else if (action.equals("register")) {
-			//Log.v("console", args.getBoolean(0) + args.getBoolean(1));
-			Boolean analytics = args.getBoolean(0);
-			Boolean loc = args.getBoolean(1);
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-			register(analytics, loc);
-                }
-            });
+		else if (action.equals("initApp")) {
+			final Boolean analytics = args.getBoolean(0);
+			final Boolean loc = args.getBoolean(1);
+			
+			cordova.getThreadPool().execute(new Runnable() {
+				public void run() {
+					initApp(analytics, loc);
+				}
+			});
 		}
 		else if (action.equals("setSubscriberKey")) {
 			try {
 				ETPush.pushManager().setSubscriberKey(args.getString(0));
 			}
 			catch (ETException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 		else {
 			return false;
 		}
-		if (reRegisterDevice) {
+		if (reRegisterDevice & isActive()) {
 			try {
-				if (ETPush.pushManager().isPushEnabled())
-					ETPush.pushManager().enablePush(null);
-				else
-					ETPush.pushManager().disablePush(null);
+				reRegisterDevice();
 			}
 			catch (ETException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
-        
+
 		return true;
 	}
-    
-	public void register(Boolean location, Boolean analytics) {
-		//This method sets up the ExactTarget mobile push system
-        
-		context = this.cordova.getActivity().getApplicationContext();
-		try {
-			Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
-			boolean isDebuggable = (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-			String appID;
-			String accessToken;
-			String gcmSenderID;
-            
-			if (isDebuggable) {
-				ETPush.setLogLevel(Log.DEBUG);
-				appID = bundle.getString("ETApplicationID_dev");
-				accessToken = bundle.getString("ETAccessToken_dev");
-				gcmSenderID = bundle.getString("GCMSenderID_dev");
+
+	public void initApp(Boolean location, Boolean analytics) {
+
+		if (!isActive) {
+			//This method sets up the ExactTarget mobile push system (once for each app)
+
+			context = this.cordova.getActivity().getApplicationContext();
+			try {
+				Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+				boolean isDebuggable = (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+				String appID;
+				String accessToken;
+				String gcmSenderID;
+
+				if (isDebuggable) {
+					ETPush.setLogLevel(Log.DEBUG);
+					appID = bundle.getString("ETApplicationID_dev");
+					accessToken = bundle.getString("ETAccessToken_dev");
+					gcmSenderID = bundle.getString("GCMSenderID_dev");
+				}
+				else {
+					appID = bundle.getString("ETApplicationID_prod");
+					accessToken = bundle.getString("ETAccessToken_prod");
+					gcmSenderID = bundle.getString("GCMSenderID_prod");
+				}
+				
+				if (ETPush.getLogLevel() <= Log.DEBUG) {
+					Log.d(TAG, "analytics: "+analytics);
+					Log.d(TAG, "loc: "+location);				
+				}
+
+				isActive = true;
+				ETPush.readyAimFire(context, appID,
+						accessToken, analytics, location, false);
+				ETPush pushManager = ETPush.pushManager();
+				pushManager.setNotificationRecipientClass(ETPushNotificationRecipient.class);
+				pushManager.setGcmSenderID(gcmSenderID);
+				
+				reRegisterDevice();
+
 			}
-			else {
-				appID = bundle.getString("ETApplicationID_prod");
-				accessToken = bundle.getString("ETAccessToken_prod");
-				gcmSenderID = bundle.getString("GCMSenderID_prod");
-			}
-			isActive = true;
-			ETPush.readyAimFire(context, appID,
-                                accessToken, analytics, location, false);
-			ETPush pushManager = ETPush.pushManager();
-			pushManager.setNotificationRecipientClass(ETPushNotificationRecipient.class);
-			pushManager.setGcmSenderID(gcmSenderID);
-		}
-		catch (Exception e) {
-			Log.e(TAG, e.getMessage(), e);
-		}
-        
-		// enable push manager
-		try {
-			if (!ETPush.pushManager().isPushEnabled()) {
-				ETPush.pushManager().enablePush(null);
+			catch (Exception e) {
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
-		catch (ETException e) {
-			Log.e(TAG, e.getMessage(), e);
-		}
-        
 	}
-    
+
+	private void reRegisterDevice() throws ETException {
+		if (ETPush.pushManager().isPushEnabled()) {
+			ETPush.pushManager().enablePush(null);
+		}	
+		else {
+			ETPush.pushManager().disablePush(null);
+		}					
+	}	
+	
 	public void ToggleGeoLocation(boolean enabled) {
+		if (ETPush.getLogLevel() <= Log.DEBUG) {
+			Log.d(TAG, "ToggleGeoLocation");
+		}
 		if (enabled) {
 			try {
 				if (!ETLocationManager.locationManager().isWatchingLocation()) {
-					Log.d(TAG, "Geo enabled");
+					if (ETPush.getLogLevel() <= Log.DEBUG) {
+						Log.d(TAG, "Geo enabled");
+					}
 					ETLocationManager.locationManager().startWatchingLocation();
 				}
 			}
 			catch (ETException e) {
-				Log.e(TAG, e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 		else {
 			try {
 				if (ETLocationManager.locationManager().isWatchingLocation()) {
-					Log.d(TAG, "Geo Disbaled");
+					if (ETPush.getLogLevel() <= Log.DEBUG) {
+						Log.d(TAG, "Geo disabled");
+					}
 					ETLocationManager.locationManager().stopWatchingLocation();
 					;
 				}
 			}
 			catch (ETException e) {
-				Log.e(TAG, e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 	}
-    
+
 	public void TogglePush(boolean enablePush) {
 		if (enablePush) {
 			// enable push manager
@@ -223,7 +255,9 @@ public class ETSdkWrapper extends CordovaPlugin {
 				}
 			}
 			catch (ETException e) {
-				Log.e("catch", e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
 		}
 		else {
@@ -233,20 +267,22 @@ public class ETSdkWrapper extends CordovaPlugin {
 				}
 			}
 			catch (ETException e) {
-				Log.e("catch", e.getMessage(), e);
+				if (ETPush.getLogLevel() <= Log.ERROR) {
+					Log.e(TAG, e.getMessage(), e);
+				}
 			}
-            
+
 		}
 	}
-    
+
 	public static void sendPushPayload(JSONObject json) {
 		String callBack = "javascript:" + notificationCallBack + "(" + json.toString() + ")";
 		Log.v(TAG, callBack);
 		gWebView.sendJavascript(callBack);
 	}
-    
+
 	public static boolean isActive() {
 		return isActive;
 	}
-    
+
 }

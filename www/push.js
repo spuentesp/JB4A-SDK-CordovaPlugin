@@ -57,8 +57,8 @@ var exec = require('cordova/exec');
     }, 
     //ANDROID ONLY Opt out of push notifications
 
-//      ETPush.disbalePush(success, error);
-    disbalePush: function(SuccessCallback, errorCallback) {
+//      ETPush.disablePush(success, error);
+    disablePush: function(SuccessCallback, errorCallback) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "disablePush", []);
     },
     //ANDROID ONLY MUST FIRE BEFORE OTHER FUNCTIONS CAN BE CALLED fire first time device registration setup 

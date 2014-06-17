@@ -5,7 +5,7 @@
     id="com.exacttarget.etpushsdk"
     version="0.1.0">
     <name>ETPush</name>
-    <description>Cordova ET SDK extension Plugin</description>
+    <description>ET SDK Cordova Plugin</description>
     <license>Apache 2.0</license>
     <author>Jesse Boles</author>
     <keywords>cordova,device</keywords>
