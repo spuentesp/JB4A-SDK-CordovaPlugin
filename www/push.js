@@ -29,13 +29,13 @@ var exec = require('cordova/exec');
 //      ETPush.addAttribute(success, error, "FirstName", "Steve");
     addAttribute: function(SuccessCallback, errorCallback, name, value) {
                 alert("add " + name + " " + value);
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "addAttributes", [name, value]);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "addAttribute", [name, value]);
     },
     //remove an attributes value
 
 //      ETPush.removeAttribute(success, error, "FirstName");
     removeAttribute: function(SuccessCallback, errorCallback, name) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "removeAttributes", [name]);
+        cordova.exec(SuccessCallback, errorCallback, "ETPush", "removeAttribute", [name]);
     },
     //ANDROID ONLY enable geolocation
 

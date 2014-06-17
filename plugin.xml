@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="ETPushSDK"
+    id="com.exacttarget.etpushsdk"
     version="0.1.0">
     <name>ETPush</name>
     <description>Cordova ET SDK extension Plugin</description>
@@ -29,7 +29,7 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ETPush" >
-                <param name="android-package" value="com.exacttarget.hybridPlugin.SdkWrapper"/>
+                <param name="android-package" value="com.exacttarget.etpushsdk.ETSdkWrapper"/>
             </feature>
         </config-file>
         
@@ -118,8 +118,8 @@
             <string name="gcm_sender_id_prod">$GCMSENDERIDPROD</string>
  		  </config-file>
 
-        <source-file src="src/android/SdkWrapper.java" target-dir="src/com/exacttarget/hybridPlugin" />
-        <source-file src="src/android/cordova-3.5.0-dev.jar" target-dir="libs" />
+        <source-file src="src/android/ETSdkWrapper.java" target-dir="src/com/exacttarget/etpushsdk" />
+        <source-file src="src/android/ETPushNotificationRecipient.java" target-dir="src/com/exacttarget/etpushsdk" />
         <source-file src="src/android/etsdk-3.1.2.jar" target-dir="libs" />
         <source-file src="src/android/google-play-services-16.0.0.jar" target-dir="libs" />
         <source-file src="src/android/jackson-annotations-2.2.3.jar" target-dir="libs" />
@@ -151,11 +151,11 @@
         </config-file>
         <config-file target="config.xml" parent="/*">
             <feature name="ETPush">
-                <param name="ios-package" value="SdkWrapper"/>
+                <param name="ios-package" value="ETSdkWrapper"/>
             </feature>
         </config-file>
-        <header-file src="src/ios/SdkWrapper.h" />
-        <source-file src="src/ios/SdkWrapper.m" />
+        <header-file src="src/ios/ETSdkWrapper.h" />
+        <source-file src="src/ios/ETSdkWrapper.m" />
         <source-file src="src/ios/etpushsdk/libetpushsdk-3.1.1.a" framework="true" />
         <header-file src="src/ios/etpushsdk/ETLandingPagePresenter.h" />
         <header-file src="src/ios/etpushsdk/ETLocationManager.h" />
