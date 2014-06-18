@@ -65,8 +65,7 @@
         
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <!-- activity that handles message reception and forwarding -->
-            <activity android:name="com.exacttarget.hybridPlugin.PushNotificationRecipient">
-            </activity>
+            <activity android:name="com.exacttarget.etpushsdk.ETPushNotificationRecipient" />
             <!-- ET Broadcast Receiver for handling push messages. -->
             <receiver android:name="com.exacttarget.etpushsdk.ET_GenericReceiver" android:permission="com.google.android.c2dm.permission.SEND">
                 <intent-filter>
