@@ -1,7 +1,7 @@
 ETPushSDK plugin
 ===============
 
-Cordova plugin that uses that implements the ExactTarget mobile push sdk to add push functionality to your Phonegap or Cordova applications.
+Cordova plugin that implements the ExactTarget mobile push sdk to add push functionality to your Phonegap or Cordova applications.
 
 
 Version History
