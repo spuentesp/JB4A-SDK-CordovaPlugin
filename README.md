@@ -29,7 +29,7 @@ Follow these [instructions](https://code.exacttarget.com/mobilepush/integrating-
 Once provisioning and code@ apps are setup we can install the plugin with the following command:
 **be sure to replace the values below with your code@ app ids/access tokens and the gcm sender ids.
 
-https://github.com/exacttarget/MobilePushSDK-CordovaPlugin --variable DEVAPPID='427c085f-5358944f2-a8f7-bbc5150c77c5' --variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt' --variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd' --variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3' --variable GCMSENDERIDDEV='123456' --variable GCMSENDERIDPROD='123456' --variable USEGEO='true' --variable USEANALYTICS='true'
+cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin --variable DEVAPPID='427c085f-5358944f2-a8f7-bbc5150c77c5' --variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt' --variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd' --variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3' --variable GCMSENDERIDDEV='123456' --variable GCMSENDERIDPROD='123456' --variable USEGEO='true' --variable USEANALYTICS='true'
 
 ## Android Installation
 
