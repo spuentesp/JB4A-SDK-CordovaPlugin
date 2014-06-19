@@ -80,7 +80,7 @@ protected void onPause() {
 
 ##### add the following to the appDelegate.m file in the did finish with lauching with options function
 
-`
+```Objective C
 NSBundle* mainBundle = [NSBundle mainBundle];
     NSDictionary* ETSettings = [mainBundle objectForInfoDictionaryKey:@"ETAppSettings"];
     BOOL useGeoLocation = [[ETSettings objectForKey:@"UseGeofences"] boolValue];
@@ -117,11 +117,11 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     if (useGeoLocation) {
         [[ETLocationManager locationManager] startWatchingLocation]; 
     }
-`
+```
 
 ##### add the following functions to the appDelegate.m file
 
-`
+```Objective C
  (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[ETPush pushManager] registerDeviceToken:deviceToken];
 }
@@ -145,7 +145,7 @@ NSBundle* mainBundle = [NSBundle mainBundle];
         [ETSdkWrapper.etPlugin notifyOfMessage:jsonData];
     }
 }
-`
+```
 
 
 
