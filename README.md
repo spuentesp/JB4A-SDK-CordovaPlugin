@@ -52,7 +52,7 @@ https://github.com/exacttarget/MobilePushSDK-CordovaPlugin --variable DEVAPPID='
 
 ##### add the following lines of code to the main activity class in your project usually patforms/android/src/packageName/projectname/class.java this is needed for analytics
 
-`
+```java
 @Override 
 protected void onResume() {
 	super.onResume(); 
@@ -74,7 +74,7 @@ protected void onPause() {
 		Log.e(TAG, e.getMessage(), e); 
 	}
 }
-`
+```
 
 ## ios installation
 
