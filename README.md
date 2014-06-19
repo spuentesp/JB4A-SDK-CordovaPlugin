@@ -52,7 +52,7 @@ https://github.com/exacttarget/MobilePushSDK-CordovaPlugin --variable DEVAPPID='
 
 ##### add the following lines of code to the main activity class in your project usually patforms/android/src/packageName/projectname/class.java this is needed for analytics
 
-''
+`
 @Override 
 protected void onResume() {
 	super.onResume(); 
@@ -74,13 +74,13 @@ protected void onPause() {
 		Log.e(TAG, e.getMessage(), e); 
 	}
 }
-''
+`
 
 ## ios installation
 
 ##### add the following to the appDelegate.m file in the did finish with lauching with options function
 
-''
+`
 NSBundle* mainBundle = [NSBundle mainBundle];
     NSDictionary* ETSettings = [mainBundle objectForInfoDictionaryKey:@"ETAppSettings"];
     BOOL useGeoLocation = [[ETSettings objectForKey:@"UseGeofences"] boolValue];
@@ -117,11 +117,11 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     if (useGeoLocation) {
         [[ETLocationManager locationManager] startWatchingLocation]; 
     }
-''
+`
 
 ##### add the following functions to the appDelegate.m file
 
-''
+`
  (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[ETPush pushManager] registerDeviceToken:deviceToken];
 }
@@ -145,7 +145,7 @@ NSBundle* mainBundle = [NSBundle mainBundle];
         [ETSdkWrapper.etPlugin notifyOfMessage:jsonData];
     }
 }
-''
+`
 
 
 
