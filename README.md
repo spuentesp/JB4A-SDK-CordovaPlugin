@@ -48,11 +48,11 @@ https://github.com/exacttarget/MobilePushSDK-CordovaPlugin --variable DEVAPPID='
 3. update the GCM library with the command 'android update lib-project --path path/to/android/sdk/lib/project --target 'android api version you want to target' ' you can get a list of the currently installed targets with command 'android list targets'
 
 4. add 'android.library.reference.2=path/to/android/sdk/installation/extras/google/google_play_services/libproject/google-play-services_lib' to the android platforms local.properties file
-..* **note the number after reference as this needs to be above any current references that are in your local.properties or project.properties files**
+''* **note the number after reference as this needs to be above any current references that are in your local.properties or project.properties files**
 
 ##### add the following lines of code to the main activity class in your project usually patforms/android/src/packageName/projectname/class.java this is needed for analytics
 
-..
+''
 @Override 
 protected void onResume() {
 	super.onResume(); 
@@ -73,13 +73,13 @@ protected void onPause() {
 	catch (ETException e) {
 		Log.e(TAG, e.getMessage(), e); 
 	}
-}..
+}''
 
 ## ios installation
 
 ##### add the following to the appDelegate.m file in the did finish with lauching with options function
 
-..
+''
 NSBundle* mainBundle = [NSBundle mainBundle];
     NSDictionary* ETSettings = [mainBundle objectForInfoDictionaryKey:@"ETAppSettings"];
     BOOL useGeoLocation = [[ETSettings objectForKey:@"UseGeofences"] boolValue];
@@ -116,11 +116,11 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     if (useGeoLocation) {
         [[ETLocationManager locationManager] startWatchingLocation]; 
     }
-..
+''
 
 ##### add the following functions to the appDelegate.m file
 
-..
+''
  (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[ETPush pushManager] registerDeviceToken:deviceToken];
 }
@@ -144,7 +144,7 @@ NSBundle* mainBundle = [NSBundle mainBundle];
         [ETSdkWrapper.etPlugin notifyOfMessage:jsonData];
     }
 }
-..
+''
 
 
 
