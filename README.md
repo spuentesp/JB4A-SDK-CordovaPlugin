@@ -146,6 +146,28 @@ NSBundle* mainBundle = [NSBundle mainBundle];
 }
 ```
 
+#### Replace the following function in the ```appDelegate.m``` file
+
+```objective-c
+- (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:notification.userInfo
+                                                       options:0
+                                                         error:&error];
+    if (!jsonData) {
+        
+        NSLog(@"jsn error: %@", error);
+        
+    } else {
+        
+        [ETSdkWrapper.etPlugin notifyOfMessage:jsonData];
+    }
+    // re-post ( broadcast )
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDVLocalNotification object:notification];
+}
+```
+
 
 
 
