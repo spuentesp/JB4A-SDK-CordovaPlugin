@@ -1,11 +1,7 @@
-ETPushSDK plugin
-===============
+# ExactTarget MobilePush SDK for Cordova/PhoneGap
 
-Cordova plugin that implements the ExactTarget mobile push sdk to add push functionality to your Phonegap or Cordova applications.
+Cordova plugin that implements the ExactTarget MobilePush SDK to add push functionality to your Phonegap or Cordova applications.
 
-
-Version History
-============
 ## Release History
 
 ### Version 1.0.1
@@ -17,34 +13,43 @@ _Released June 19, 2014_
 _Released June 10, 2014_
 
 * First public version live
-* Uses ios sdk version 3.1.1 and android version 3.1.2
+* Uses iOS SDK version 3.1.1 and android version 3.1.2
 
-Installing the Plugin
-=====================
+## Installing the Plugin
 
 Follow these [instructions](https://code.exacttarget.com/mobilepush/integrating-mobilepush-sdk-your-ios-mobile-app#How) for ios to provision and setup your [Code@ExactTarget](http://code.exacttarget.com) apps
 
 Follow these [instructions](https://code.exacttarget.com/mobilepush/integrating-mobilepush-sdk-your-android-mobile-app#How) for android to provision and setup your [Code@ExactTarget](http://code.exacttarget.com) apps
 
-Once provisioning and code@ apps are setup we can install the plugin with the following command:
-**be sure to replace the values below with your code@ app ids/access tokens and the gcm sender ids.
+Once provisioning and [Code@ExactTarget](http://code.exacttarget.com) apps are setup we can install the plugin with the following command:
+**be sure to replace the values below with your Code@ET app ids/access tokens and the GCM Sender IDs.
 
-cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin --variable DEVAPPID='427c085f-5358944f2-a8f7-bbc5150c77c5' --variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt' --variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd' --variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3' --variable GCMSENDERIDDEV='123456' --variable GCMSENDERIDPROD='123456' --variable USEGEO='true' --variable USEANALYTICS='true'
+```Bash
+cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin \
+	--variable DEVAPPID='427c085f-5358944f2-a8f7-bbc5150c77c5' \
+	--variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt' \
+	--variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd' \
+	--variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3' \
+	--variable GCMSENDERIDDEV='123456' \
+	--variable GCMSENDERIDPROD='123456' \
+	--variable USEGEO='true' \
+	--variable USEANALYTICS='true'
+```
 
-## Android Installation
+### Android Installation
 
-##### add the android gcm library to your project
+#### Add the android gcm library to your project
 
-1. via terminal use comand 'android' this will open the android sdk manager
+1. Via terminal use comand 'android' this will open the android sdk manager
 
-2. under extras choose the google play services library
+2. Under extras choose the Google Play Services library
 
-3. update the GCM library with the command 'android update lib-project --path path/to/android/sdk/lib/project --target 'android api version you want to target' ' you can get a list of the currently installed targets with command 'android list targets'
+3. Update the GCM library with the command ```android update lib-project --path path/to/android/sdk/lib/project --target '<android api version you want to target>'```. You can get a list of the currently installed targets with command ```android list targets```.
 
-4. add 'android.library.reference.2=path/to/android/sdk/installation/extras/google/google_play_services/libproject/google-play-services_lib' to the android platforms local.properties file
-''* **note the number after reference as this needs to be above any current references that are in your local.properties or project.properties files**
+4. Add ```android.library.reference.2=path/to/android/sdk/installation/extras/google/google_play_services/libproject/google-play-services_lib``` to the Android platforms local.properties file.
+ **Note the number after reference as this needs to be above any current references that are in your local.properties or project.properties files.**
 
-##### add the following lines of code to the main activity class in your project usually patforms/android/src/packageName/projectname/class.java this is needed for analytics
+#### Add the following lines of code to the main activity class in your project, usually ```platforms/android/src/packageName/<projectname>/<class>.java```. This is needed for analytics.
 
 ```java
 @Override 
@@ -70,9 +75,9 @@ protected void onPause() {
 }
 ```
 
-## ios installation
+### iOS Installation
 
-##### add the following to the appDelegate.m file in the did finish with lauching with options function
+#### Add the following to the ```appDelegate.m``` file in ```application:didFinishLaunchingWithOptions:```
 
 ```objective-c
 NSBundle* mainBundle = [NSBundle mainBundle];
@@ -113,7 +118,7 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     }
 ```
 
-##### add the following functions to the appDelegate.m file
+#### Add the following functions to the ```appDelegate.m``` file
 
 ```objective-c
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -132,7 +137,7 @@ NSBundle* mainBundle = [NSBundle mainBundle];
                                                          error:&error];
     if (!jsonData) {
         
-        NSLog(@"jsn error: %@", error);
+        NSLog(@"json error: %@", error);
         
     } else {
         
