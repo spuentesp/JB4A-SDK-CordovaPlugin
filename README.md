@@ -6,12 +6,6 @@ Cordova plugin that uses that implements the ExactTarget mobile push sdk to add 
 
 Version History
 ============
-# ExactTarget MobilePush SDK for iOS
-
-This is the git repository for the ET MobilePush SDK for iOS.
-
-For more information, please see [Code@ExactTarget](http://code.exacttarget.com), or visit the online documentation at [here](http://exacttarget.github.io/MobilePushSDK-CordovaPlugin/).
-
 ## Release History
 
 ### Version 1.0.1
