@@ -73,7 +73,8 @@ protected void onPause() {
 	catch (ETException e) {
 		Log.e(TAG, e.getMessage(), e); 
 	}
-}''
+}
+''
 
 ## ios installation
 
