@@ -122,7 +122,7 @@ NSBundle* mainBundle = [NSBundle mainBundle];
 ##### add the following functions to the appDelegate.m file
 
 ```objective-c
- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[ETPush pushManager] registerDeviceToken:deviceToken];
 }
 
