@@ -44,7 +44,7 @@ cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin \
 
 2. Under extras choose the Google Play Services library
 
-3. Update the GCM library with the command ```android update lib-project --path path/to/android/sdk/lib/project --target '<android api version you want to target>'```. You can get a list of the currently installed targets with command ```android list targets```.
+3. Update the GCM library with the command ```android update lib-project --path relative/path/from/local.properties/to/android/sdk/lib/project --target '<android api version you want to target>'```. You can get a list of the currently installed targets with command ```android list targets```.
 
 4. Add ```android.library.reference.2=path/to/android/sdk/installation/extras/google/google_play_services/libproject/google-play-services_lib``` to the Android platforms local.properties file.
  **Note the number after reference as this needs to be above any current references that are in your local.properties or project.properties files.**
