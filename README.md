@@ -1,4 +1,4 @@
-# **PreRelase** 
+# **PreRelease** 
 # ExactTarget MobilePush SDK for Cordova/PhoneGap
 
 Cordova plugin that implements the ExactTarget MobilePush SDK to add push functionality to your Phonegap or Cordova applications.
