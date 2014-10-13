@@ -53,13 +53,15 @@ cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin \
 #### Add the following lines of code to the main activity class in your project, usually ```platforms/android/src/packageName/<projectname>/<class>.java```. This is needed for analytics.
 
 ```java
-@Override 
+@Override
+
 protected void onResume() {
 	super.onResume(); 
 	try {
 		ETPush.pushManager().activityResumed(this); 
 	}
-	catch (ETException e) { 
+	catch (ETException e) {
+
 	Log.e(TAG, e.getMessage(), e);
 	}
 } 
@@ -69,7 +71,8 @@ protected void onPause() {
 	super.onPause();
 	try { 
 		ETPush.pushManager().activityPaused(this);
-	} 
+	}
+
 	catch (ETException e) {
 		Log.e(TAG, e.getMessage(), e); 
 	}
@@ -108,7 +111,34 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     
 #endif
     
-    [[ETPush pushManager] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
+    // IPHONEOS_DEPLOYMENT_TARGET = 6.X or 7.X
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    // Supports IOS SDK 8.X (i.e. XCode 6.X and up)
+    // are we running on IOS8 and above?
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]) {
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+    UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert
+    categories:nil];
+    [[ETPush pushManager] registerUserNotificationSettings:settings];
+    [[ETPush pushManager] registerForRemoteNotifications];
+    }
+    else {
+    [[ETPush pushManager]registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|  UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    }
+    #else
+    // Supports IOS SDKs < 8.X (i.e. XCode 5.X or less)
+    [[ETPush pushManager] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    #endif
+    #else
+    // IPHONEOS_DEPLOYMENT_TARGET >= 8.X
+    // Supports IOS SDK 8.X (i.e. XCode 6.X and up)
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+    UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert
+    categories:nil];
+    [[ETPush pushManager] registerUserNotificationSettings:settings];
+    [[ETPush pushManager] registerForRemoteNotifications];
+    #endif
     [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:YES];
     [[ETPush pushManager] applicationLaunchedWithOptions:launchOptions];
     NSString* token = [[ETPush pushManager] deviceToken];
