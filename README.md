@@ -152,17 +152,8 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     }
 ```
 
-#### Add the following functions to the ```appDelegate.m``` file
-
+#### Add the following function to the ```appDelegate.m``` file
 ```objective-c
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    [[ETPush pushManager] registerDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    
-    [[ETPush pushManager] applicationDidFailToRegisterForRemoteNotificationsWithError:error];
-}
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [[ETPush pushManager] handleNotification:userInfo forApplicationState:application.applicationState];
     NSError *error;
@@ -181,6 +172,28 @@ NSBundle* mainBundle = [NSBundle mainBundle];
 ```
 
 #### Replace the following function in the ```appDelegate.m``` file
+
+```objective-c
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [[ETPush pushManager] registerDeviceToken:deviceToken];
+    // re-post ( broadcast )
+    NSString* token = [[[[deviceToken description]
+                         stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                        stringByReplacingOccurrencesOfString: @">" withString: @""]
+                       stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDVRemoteNotification object:token];
+}
+```
+```objective-c
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    
+    [[ETPush pushManager] applicationDidFailToRegisterForRemoteNotificationsWithError:error];
+    // re-post ( broadcast )
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDVRemoteNotificationError object:error];
+}
+```
 
 ```objective-c
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
