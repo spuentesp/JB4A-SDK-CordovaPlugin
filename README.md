@@ -4,6 +4,13 @@ Cordova plugin that implements the ExactTarget MobilePush SDK to add push functi
 
 ## Release History
 
+### Version 1.1.0
+_Released June 19, 2014_
+
+* Updated to use the 3.3.0 Journey Builder for APPS SDK.
+* Support for Xcode 6 added as well as iOS8.
+* get methods for attributes and device information added.
+
 ### Version 1.0.1
 _Released June 19, 2014_
 
@@ -25,14 +32,14 @@ Once provisioning and [Code@ExactTarget](http://code.exacttarget.com) apps are s
 **be sure to replace the values below with your Code@ET app ids/access tokens and the GCM Sender IDs.
 
 ```Bash
-cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin \
-	--variable DEVAPPID='427c085f-5358944f2-a8f7-bbc5150c77c5' \
-	--variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt' \
-	--variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd' \
-	--variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3' \
-	--variable GCMSENDERIDDEV='123456' \
-	--variable GCMSENDERIDPROD='123456' \
-	--variable USEGEO='true' \
+cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin 
+	--variable DEVAPPID='427c085f-5358944f2-a8f7-bbc5150c77c5' 
+	--variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt'
+	--variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd'
+	--variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3'
+	--variable GCMSENDERIDDEV='123456'
+	--variable GCMSENDERIDPROD='123456'
+	--variable USEGEO='true'
 	--variable USEANALYTICS='true'
 ```
 
@@ -107,7 +114,34 @@ NSBundle* mainBundle = [NSBundle mainBundle];
     
 #endif
     
-    [[ETPush pushManager] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge| UIRemoteNotificationTypeSound];
+    // IPHONEOS_DEPLOYMENT_TARGET = 6.X or 7.X
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    // Supports IOS SDK 8.X (i.e. XCode 6.X and up)
+    // are we running on IOS8 and above?
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                                 UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert
+                                                                                  categories:nil];
+        [[ETPush pushManager] registerUserNotificationSettings:settings];
+        [[ETPush pushManager] registerForRemoteNotifications];
+    }
+    else {
+        [[ETPush pushManager] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    }
+#else
+    // Supports IOS SDKs < 8.X (i.e. XCode 5.X or less)
+    [[ETPush pushManager] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+#endif
+#else
+    // IPHONEOS_DEPLOYMENT_TARGET >= 8.X
+    // Supports IOS SDK 8.X (i.e. XCode 6.X and up)
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                             UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert
+                                                                              categories:nil];
+    [[ETPush pushManager] registerUserNotificationSettings:settings];
+    [[ETPush pushManager] registerForRemoteNotifications];
+#endif
     [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:YES];
     [[ETPush pushManager] applicationLaunchedWithOptions:launchOptions];
     NSString* token = [[ETPush pushManager] deviceToken];
