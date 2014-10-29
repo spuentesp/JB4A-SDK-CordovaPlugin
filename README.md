@@ -1,6 +1,6 @@
-# ExactTarget MobilePush SDK for Cordova/PhoneGap
+# Journey Builder for APPS SDK for Cordova/PhoneGap
 
-Cordova plugin that implements the ExactTarget MobilePush SDK to add push functionality to your Phonegap or Cordova applications.
+Cordova plugin that implements the Journey Builder for APPS SDK to add push functionality to your Phonegap or Cordova applications.
 
 ## Release History
 
