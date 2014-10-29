@@ -59,9 +59,8 @@ static ETSdkWrapper *etPluginInstance;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:subKey];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
-    
-    
 }
+
 - (void) addTag:(CDVInvokedUrlCommand *)command
 {
     NSString* tag = [command.arguments objectAtIndex:0];
@@ -87,6 +86,19 @@ static ETSdkWrapper *etPluginInstance;
     }];
     
 }
+
+-(void) getTags:(CDVInvokedUrlCommand *)command
+{
+    NSSet* tags = [[ETPush pushManager] allTags];
+    
+    [self.commandDelegate runInBackground:^{
+        NSString* result =[NSString stringWithFormat:@"%@", tags];
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)addAttribute:(CDVInvokedUrlCommand *)command
 {
     NSString* attName = [command.arguments objectAtIndex:0];
@@ -116,6 +128,26 @@ static ETSdkWrapper *etPluginInstance;
     
     
 }
+- (void)getAttribute:(CDVInvokedUrlCommand *)command
+{
+    NSString* attName = [command.arguments objectAtIndex:0];
+    NSDictionary* attributes = [[ETPush pushManager] allAttributes];
+    NSString* attval = [ attributes objectForKey:attName];
+    
+    [self.commandDelegate runInBackground:^{
+        NSString* result =[NSString stringWithFormat:@"%@", attval];
+        CDVPluginResult* pluginResult = nil;
+        if(result != NULL)
+        {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+        }
+        else
+        {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"The attribute %@ does not appear to be set",attName]];
+        }
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
 
 - (void) resetBadgeCount:(CDVInvokedUrlCommand *)command
 {
@@ -126,7 +158,6 @@ static ETSdkWrapper *etPluginInstance;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
-    
 }
 
 - (void) registerForNotifications:(CDVInvokedUrlCommand *)command
@@ -138,7 +169,6 @@ static ETSdkWrapper *etPluginInstance;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:notificationCallback];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
-    
 }
 
 -(void) notifyOfMessage:(NSData *)payload
@@ -148,6 +178,56 @@ static ETSdkWrapper *etPluginInstance;
     NSLog(@"stringByEvaluatingJavaScriptFromString %@", notifyJS);
     
     NSString *jsResults = [self.webView stringByEvaluatingJavaScriptFromString:notifyJS];
+}
+
+- (void)getDeviceID:(CDVInvokedUrlCommand *)command
+{
+    [self.commandDelegate runInBackground:^{
+        NSString* deviceID = [ETPush safeDeviceIdentifier];
+        NSString* result =[NSString stringWithFormat:@"%@",deviceID];
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)getDeviceToken:(CDVInvokedUrlCommand *)command
+{
+    [self.commandDelegate runInBackground:^{
+        NSString* deviceToken = [[ETPush pushManager] deviceToken];
+        NSString* result =[NSString stringWithFormat:@"%@",deviceToken];
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+/* Android only methods here to keep errors from clogging the log */
+- (void)initApp:(CDVInvokedUrlCommand *)command
+{
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)enablePush:(CDVInvokedUrlCommand *)command
+{
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)enableGeoLocation:(CDVInvokedUrlCommand *)command
+{
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
 
 

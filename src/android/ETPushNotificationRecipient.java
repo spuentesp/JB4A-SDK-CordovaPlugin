@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import com.exacttarget.etpushsdk.ETPush;
+import com.exacttarget.etpushsdk.ETSdkWrapper;
 
 import android.app.Activity;
 import android.content.Intent;

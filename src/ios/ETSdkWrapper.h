@@ -31,10 +31,16 @@
 - (void)setSubscriberKey:(CDVInvokedUrlCommand*)command;
 - (void)addTag:(CDVInvokedUrlCommand*)command;
 - (void)removeTag:(CDVInvokedUrlCommand*)command;
+- (void)getTags:(CDVInvokedUrlCommand*)command;
 - (void)addAttribute:(CDVInvokedUrlCommand*)command;
 - (void)removeAttribute:(CDVInvokedUrlCommand*)command;
+- (void)getAttribute:(CDVInvokedUrlCommand*)command;
 - (void)resetBadgeCount:(CDVInvokedUrlCommand*)command;
 - (void)registerForNotifications:(CDVInvokedUrlCommand*)command;
 - (void)notifyOfMessage:(NSData*) payload;
+- (void)getDeviceID:(CDVInvokedUrlCommand*)command;
+- (void)initApp:(CDVInvokedUrlCommand *)command;
+- (void)enablePush:(CDVInvokedUrlCommand *)command;
+- (void)enableGeoLocation:(CDVInvokedUrlCommand *)command;
 
 @end

@@ -71,12 +71,25 @@
                 <intent-filter>
                     <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                     <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                    <category android:name="com.exacttarget.internal.orangehybrid" />
+                    <category android:name="$PACKAGE_NAME" />
                 </intent-filter>
             </receiver>
             <!-- ET Broadcast Receivers for for sending data (required) -->
             <receiver android:name="com.exacttarget.etpushsdk.ETSendDataReceiver"/>
-            
+            <!-- ET Service handlers for sending data (required) -->
+            <service android:name="com.exacttarget.etpushsdk.ETSendDataIntentService"/>
+
+            <!-- ET Broadcast Receiver for handling notification taps. Used to capture analytics before handing off to client's Activity -->
+            <receiver android:name="com.exacttarget.etpushsdk.ETOpenReceiver">
+                <intent-filter>
+                     <action android:name="com.exacttarget.MESSAGE_OPENED"/>
+                </intent-filter>
+            </receiver>
+
+            <!-- ET Open Direct landing page presenter -->
+            <activity android:label="Landing Page" android:name="com.exacttarget.etpushsdk.ETLandingPagePresenter">
+                    </activity>
+
             <!-- ET Broadcast Receivers for handling location updates -->
             <receiver android:name="com.exacttarget.etpushsdk.location.receiver.LocationChangedReceiver"/> <!-- Get location ourselves -->
             <receiver android:name="com.exacttarget.etpushsdk.location.receiver.PassiveLocationChangedReceiver"/> <!-- piggyback and listen in on other apps that request location updates -->
@@ -86,27 +99,41 @@
                     <action android:name="android.intent.action.ACTION_BATTERY_OKAY"/>
                 </intent-filter>
             </receiver>
-            
+                                    
+              <!-- Wake up the app up every so often to get user's location -->
             <receiver android:name="com.exacttarget.etpushsdk.ETLocationTimeoutReceiver"/>
             <receiver android:name="com.exacttarget.etpushsdk.ETLocationWakeupReceiver"/>
+            <receiver android:name="com.exacttarget.etpushsdk.ETLocationProviderChangeReceiver">
+                <intent-filter>
+                    <action android:name="android.location.PROVIDERS_CHANGED"/>
+                    <category android:name="android.intent.category.DEFAULT"/>
+                </intent-filter>
+            </receiver>
             <receiver android:name="com.exacttarget.etpushsdk.ETGeofenceReceiver"/>
-            
+
             <!-- figure out where they are if they just turned on their phone (e.g. plane trip) -->
-            <receiver android:enabled="true" android:exported="true" android:name="com.exacttarget.etpushsdk.location.receiver.BootReceiver">
+            <receiver android:name="com.exacttarget.etpushsdk.location.receiver.BootReceiver">
                 <intent-filter>
                     <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 </intent-filter>
             </receiver>
-            
+
             <!-- ET Service handlers for handling location updates -->
             <service android:name="com.exacttarget.etpushsdk.ETLocationTimeoutService"/>
             <service android:name="com.exacttarget.etpushsdk.ETLocationWakeupService"/>
+                <service android:name="com.exacttarget.etpushsdk.ETLocationProviderChangeService"/>
             <service android:name="com.exacttarget.etpushsdk.ETGeofenceIntentService"/>
+            <!-- Service handlers for iBeacons -->
+            <service android:enabled="true" android:exported="true" android:isolatedProcess="false" android:label="iBeacon" android:name="com.radiusnetworks.ibeacon.service.IBeaconService"/>
+            <service android:enabled="true" android:name="com.radiusnetworks.ibeacon.IBeaconIntentProcessor">
+            <meta-data android:name="background" android:value="true"/>
+            <intent-filter android:priority="1">
+                <action android:name="$PACKAGE_NAME.DID_RANGING"/>
+                <action android:name="$PACKAGE_NAME.DID_MONITORING"/>
+            </intent-filter>
+            </service>
             
-            <!-- ET Service handlers for sending data (required) -->
-            <service android:name="com.exacttarget.etpushsdk.ETSendDataIntentService"/>
-            
-                       	<!-- ET Google Cloud Messaging Version (required to match GCM jar file) -->
+                        <!-- ET Google Cloud Messaging Version (required to match GCM jar file) -->
             <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
             <meta-data android:name="ETApplicationID_dev" android:value="@string/et_app_id_dev" />
             <meta-data android:name="ETAccessToken_dev" android:value="@string/et_access_token_dev" />
@@ -114,7 +141,9 @@
             <meta-data android:name="ETApplicationID_prod" android:value="@string/et_app_id_prod" />
             <meta-data android:name="ETAccessToken_prod" android:value="@string/et_access_token_prod" />
             <meta-data android:name="GCMSenderID_prod" android:value="@string/gcm_sender_id_prod" />
-            </config-file>
+            <meta-data android:name="UseGeofences" android:value="@string/UseGeofences" />
+            <meta-data android:name="UseAnalytics" android:value="@string/UseAnalytics" />
+        </config-file>
 
         <config-file target="res/values/strings.xml" parent="/resources">
            <string name="et_app_id_dev">$DEVAPPID</string>
@@ -123,18 +152,22 @@
             <string name="et_app_id_prod">$PRODAPPID</string>
             <string name="et_access_token_prod">$PRODACCESSTOKEN</string>
             <string name="gcm_sender_id_prod">$GCMSENDERIDPROD</string>
- 		  </config-file>
+            <string name="UseGeofences">$USEGEO</string>
+             <string name="UseAnalytics">$USEANALYTICS</string>
+      </config-file>
 
         <source-file src="src/android/ETSdkWrapper.java" target-dir="src/com/exacttarget/etpushsdk" />
         <source-file src="src/android/ETPushNotificationRecipient.java" target-dir="src/com/exacttarget/etpushsdk" />
-        <source-file src="src/android/etsdk-3.1.2.jar" target-dir="libs" />
+        <source-file src="src/android/etsdk-3.3.0.jar" target-dir="libs" />
+        <source-file src="src/android/AndroidIBeaconLibrary-0.7.7.2.jar" target-dir="libs" />
+        <source-file src="src/android/httpclientandroidlib-1.2.0.jar" target-dir="libs" />
         <source-file src="src/android/jackson-annotations-2.2.3.jar" target-dir="libs" />
         <source-file src="src/android/jackson-core-2.2.3.jar" target-dir="libs" />
         <source-file src="src/android/jackson-databind-2.2.3.jar" target-dir="libs" />
         <source-file src="src/android/joda-convert-1.5.jar" target-dir="libs" />
         <source-file src="src/android/joda-time-2.2.jar" target-dir="libs" />
-        <source-file src="src/android/ormlite-android-4.47.jar" target-dir="libs" />
-        <source-file src="src/android/ormlite-core-4.47.jar" target-dir="libs" />
+        <source-file src="src/android/ormlite-android-4.48.jar" target-dir="libs" />
+        <source-file src="src/android/ormlite-core-4.48.jar" target-dir="libs" />
         <source-file src="src/android/support-v4-19.1.0.jar" target-dir="libs" />
     </platform>
     <!-- ios -->
@@ -162,26 +195,28 @@
         </config-file>
         <header-file src="src/ios/ETSdkWrapper.h" />
         <source-file src="src/ios/ETSdkWrapper.m" />
-        <source-file src="src/ios/etpushsdk/libetpushsdk-3.1.1.a" framework="true" />
+        <source-file src="src/ios/etpushsdk/libetpushsdk-3.3.0.a" framework="true" />
+        <header-file src="src/ios/etpushsdk/ETBulkUpdateShim.h" />
+        <header-file src="src/ios/etpushsdk/ETEvent.h" />
+        <header-file src="src/ios/etpushsdk/ETFenceMessage.h" />
+        <header-file src="src/ios/etpushsdk/ETGenericUpdate.h" />
+        <header-file src="src/ios/etpushsdk/ETKeyValueStore.h" />
         <header-file src="src/ios/etpushsdk/ETLandingPagePresenter.h" />
         <header-file src="src/ios/etpushsdk/ETLocationManager.h" />
+        <header-file src="src/ios/etpushsdk/ETLocationUpdate.h" />
+        <header-file src="src/ios/etpushsdk/ETMessage.h" />
         <header-file src="src/ios/etpushsdk/ETPhoneHome.h" />
         <header-file src="src/ios/etpushsdk/ETPush.h" />
+        <header-file src="src/ios/etpushsdk/ETRegion.h" />
+        <header-file src="src/ios/etpushsdk/ETRegistration.h" />
         <header-file src="src/ios/etpushsdk/ETSqliteHelper.h" />
+        <header-file src="src/ios/etpushsdk/ETStatsUpdate.h" />
+        <header-file src="src/ios/etpushsdk/ETTestsHelper.h" />
         <header-file src="src/ios/etpushsdk/ETURLConnection.h" />
         <header-file src="src/ios/etpushsdk/ExactTargetEnhancedPushDataSource.h" />
-        <header-file src="src/ios/etpushsdk/FenceMessage.h" />
-        <header-file src="src/ios/etpushsdk/GenericUpdate.h" />
-        <header-file src="src/ios/etpushsdk/Geofence.h" />
-        <header-file src="src/ios/etpushsdk/KeyValueStore.h" />
-        <header-file src="src/ios/etpushsdk/LocationUpdate.h" />
-        <header-file src="src/ios/etpushsdk/Message.h" />
         <header-file src="src/ios/etpushsdk/PushConstants.h" />
-        <header-file src="src/ios/etpushsdk/Region.h" />
-        <header-file src="src/ios/etpushsdk/Registration.h" />
-        <header-file src="src/ios/etpushsdk/StatsUpdate.h" />
-        
         <framework src="libsqlite3.dylib" />
+        <framework src="CoreLocation.framework/" />
 
     </platform>
 
