@@ -3,13 +3,13 @@ var exec = require('cordova/exec');
 
 //      var success = function(message, attributes){console.log("success " + message);};
 //      var error = function(error){console.log("error " + error);};
-//      ETPush.register( success, error, true, true);
+//      ETPush.setSubscriberKey( success, error, "CustomerID123");
 
  module.exports = {
     //set the current subscriber key
 
 //      ETPush.setSubscriberKey(success, error, "SubscriberKey");
-    setSubscriberKey: function(SuccessCallback, errorCallback,subscriberKey) {
+    setSubscriberKey: function(SuccessCallback, errorCallback, subscriberKey) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "setSubscriberKey", [subscriberKey]);
     },
     //get the current subscriber key
@@ -30,12 +30,6 @@ var exec = require('cordova/exec');
     removeTag: function(SuccessCallback, errorCallback, tag) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "removeTag", [tag]);
     },
-    //returns a list of all the currently set tags
-
-//      ETPush.getTags(success, error);
-    getTags: function(SuccessCallback, errorCallback) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "getTags", []);
-    },
     //set an attribute's and set its value
 
 //      ETPush.addAttribute(success, error, "FirstName", "Steve");
@@ -48,7 +42,7 @@ var exec = require('cordova/exec');
     removeAttribute: function(SuccessCallback, errorCallback, name) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "removeAttribute", [name]);
     },
-    //get an attributes value
+    //get an attribute's value error returns if it does not exist or attribute has different name that what was provided
 
 //      ETPush.getAttribute(success, error, "FirstName");
     getAttribute: function(SuccessCallback, errorCallback, name) {
@@ -78,12 +72,6 @@ var exec = require('cordova/exec');
     disablePush: function(SuccessCallback, errorCallback) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "disablePush", []);
     },
-    //ANDROID ONLY MUST FIRE BEFORE OTHER FUNCTIONS CAN BE CALLED fire first time device registration setup 
-
-//      ETPush.register(success, error, true, true);
-    initApp: function(SuccessCallback, errorCallback) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "initApp", [analytics, location, cloudPages]);
-    },
     //get the unique device identifier
 
 //      ETPush.getDeviceID(success, error);
@@ -96,7 +84,7 @@ var exec = require('cordova/exec');
     getDeviceToken: function(SuccessCallback, errorCallback) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "getDeviceToken", []);
     },
-    //get the current opt in staus
+    //get the current opt in status
 
 //      ETPush.isPushEnabled(success, error);
     isPushEnabled: function(SuccessCallback, errorCallback) {
