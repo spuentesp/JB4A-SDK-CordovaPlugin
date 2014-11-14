@@ -7,10 +7,8 @@
     <name>ETPush</name>
     <description>ET SDK Cordova Plugin</description>
     <license>Apache 2.0</license>
-    <author>Jesse Boles</author>
-    <keywords>cordova,device</keywords>
-    <repo>https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git</repo>
-    <issue>https://issues.apache.org/jira/browse/CB/component/12320648</issue>
+    <author>Salesforce Marketing Cloud</author>
+    <keywords>cordova,Salesforce Marketing Cloud, push, marketing cloud, exacttarget</keywords>
 
     <js-module src="www/push.js" name="ETPush">
         <clobbers target="ETPush" />
