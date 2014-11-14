@@ -56,7 +56,7 @@
               </div>
               <pre><code> <span class="hljs-keyword">var</span> success = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message, attributes)</span>{</span>console.log(<span class="hljs-string">"success "</span> + message);};
  <span class="hljs-keyword">var</span> error = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span>{</span>console.log(<span class="hljs-string">"error "</span> + error);};
- ETPush.register( success, error, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+ ETPush.setSubscriberKey( success, error, <span class="hljs-string">"CustomerID123"</span>);
 </code></pre>
             </div>
             
@@ -85,12 +85,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <pre><code> ETPush.addTag(success, error, <span class="hljs-string">"SubscriberKey"</span>);
+              <pre><code> ETPush.setSubscriberKey(success, error, <span class="hljs-string">"SubscriberKey"</span>);
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    setSubscriberKey: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback,subscriberKey)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"getSubscriberKey"</span>, [subscriberKey]);
+            <div class="content"><div class='highlight'><pre>    setSubscriberKey: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, subscriberKey)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"setSubscriberKey"</span>, [subscriberKey]);
     },</pre></div></div>
             
         </li>
@@ -180,8 +180,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>    addAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, name, value)</span> {</span>
-                alert(<span class="hljs-string">"add "</span> + name + <span class="hljs-string">" "</span> + value);
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"addAttributes"</span>, [name, value]);
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"addAttribute"</span>, [name, value]);
     },</pre></div></div>
             
         </li>
@@ -193,7 +192,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>remove an attributes value</p>
+              <p>remove an attributes value from the registration payload. Use addAttribute(“”) to remove a value from the marketing cloud</p>
 
             </div>
             
@@ -211,7 +210,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>    removeAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, name)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"removeAttributes"</span>, [name]);
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"removeAttribute"</span>, [name]);
     },</pre></div></div>
             
         </li>
@@ -223,7 +222,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>ANDROID ONLY enable geolocation</p>
+              <p>get an attribute’s value. Error returns if it does not exist or attribute has different name than what was provided.</p>
 
             </div>
             
@@ -236,12 +235,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <pre><code> ETPush.enableGeolocation(success, error);
+              <pre><code> ETPush.getAttribute(success, error, <span class="hljs-string">"FirstName"</span>);
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    enableGeolocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"enableGeoLocation"</span>, []);
+            <div class="content"><div class='highlight'><pre>    getAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, name)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"getAttribute"</span>, [name]);
     },</pre></div></div>
             
         </li>
@@ -253,7 +252,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>ANDROID ONLY disable geolocation</p>
+              <p>ANDROID ONLY enable geolocation</p>
 
             </div>
             
@@ -266,12 +265,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <pre><code> ETPush.disableGeolocation(success, error);
+              <pre><code> ETPush.enableGeolocation(success, error);
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    disableGeolocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"disableGeoLocation"</span>, []);
+            <div class="content"><div class='highlight'><pre>    enableGeolocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"enableGeoLocation"</span>, []);
     },</pre></div></div>
             
         </li>
@@ -283,7 +282,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>ANDROID ONLY Opt in to push notifications</p>
+              <p>ANDROID ONLY disable geolocation</p>
 
             </div>
             
@@ -296,12 +295,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <pre><code> ETPush.enablePush(success, error);
+              <pre><code> ETPush.disableGeolocation(success, error);
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    enablePush: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"enablePush"</span>, []);
+            <div class="content"><div class='highlight'><pre>    disableGeolocation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"disableGeoLocation"</span>, []);
     },</pre></div></div>
             
         </li>
@@ -313,7 +312,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>ANDROID ONLY Opt out of push notifications</p>
+              <p>ANDROID ONLY Opt in to push notifications</p>
 
             </div>
             
@@ -326,12 +325,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <pre><code> ETPush.disbalePush(success, error);
+              <pre><code> ETPush.enablePush(success, error);
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    disbalePush: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"disablePush"</span>, []);
+            <div class="content"><div class='highlight'><pre>    enablePush: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"enablePush"</span>, []);
     },</pre></div></div>
             
         </li>
@@ -343,7 +342,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>ANDROID ONLY MUST FIRE BEFORE OTHER FUNCTIONS CAN BE CALLED fire first time device registration setup </p>
+              <p>ANDROID ONLY Opt out of push notifications</p>
 
             </div>
             
@@ -356,12 +355,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <pre><code> ETPush.register(success, error, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+              <pre><code> ETPush.disablePush(success, error);
 </code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>    register: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback, analytics, location)</span> {</span>
-        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"register"</span>, [analytics, location]);
+            <div class="content"><div class='highlight'><pre>    disablePush: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"disablePush"</span>, []);
     },</pre></div></div>
             
         </li>
@@ -373,7 +372,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Set a js function as a callback for when you receive a notification</p>
+              <p>get the unique device identifier</p>
 
             </div>
             
@@ -385,6 +384,96 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <pre><code> ETPush.getDeviceID(success, error);
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getDeviceID: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"getDeviceID"</span>, []);
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>get the APNS or GCM sending device token</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <pre><code> ETPush.getDeviceToken(success, error);
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getDeviceToken: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"getDeviceToken"</span>, []);
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>get the current opt in status</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <pre><code> ETPush.isPushEnabled(success, error);
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    isPushEnabled: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(SuccessCallback, errorCallback)</span> {</span>
+        cordova.exec(SuccessCallback, errorCallback, <span class="hljs-string">"ETPush"</span>, <span class="hljs-string">"isPushEnabled"</span>, []);
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Set a js function as a callback for when you receive a notification</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <pre><code> ETPush.registerForNotifications: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(success, error, onNotificationCallBack)</span>
  <span class="hljs-title">iOS</span>:
@@ -408,11 +497,11 @@
         </li>
         
         
-        <li id="section-26">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>IOS ONLY resets the badge count</p>
 
@@ -421,11 +510,11 @@
         </li>
         
         
-        <li id="section-27">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <pre><code>ETPush.resetBadgeCount(success, error);
 </code></pre>
