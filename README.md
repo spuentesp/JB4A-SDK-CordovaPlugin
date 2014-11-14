@@ -1,11 +1,11 @@
-# Journey Builder for APPS SDK for Cordova/PhoneGap
+# ExactTarget MobilePush SDK for Cordova/PhoneGap
 
 Cordova plugin that implements the Journey Builder for APPS SDK to add push functionality to your Phonegap or Cordova applications.
 
 ## Release History
 
 ### Version 1.1.0
-_Released June 19, 2014_
+_Released November 14, 2014_
 
 * Updated to use the 3.3.0 Journey Builder for APPS SDK.
 * Support for Xcode 6 added as well as iOS8.
@@ -59,13 +59,15 @@ cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin
 #### Add the following lines of code to the main activity class in your project, usually ```platforms/android/src/packageName/<projectname>/<class>.java```. This is needed for analytics.
 
 ```java
-@Override 
+@Override
+
 protected void onResume() {
 	super.onResume(); 
 	try {
 		ETPush.pushManager().activityResumed(this); 
 	}
-	catch (ETException e) { 
+	catch (ETException e) {
+
 	Log.e(TAG, e.getMessage(), e);
 	}
 } 
@@ -75,7 +77,8 @@ protected void onPause() {
 	super.onPause();
 	try { 
 		ETPush.pushManager().activityPaused(this);
-	} 
+	}
+
 	catch (ETException e) {
 		Log.e(TAG, e.getMessage(), e); 
 	}
