@@ -5,7 +5,7 @@ Cordova plugin that implements the Journey Builder for APPS SDK to add push func
 ## Release History
 
 ### Version 1.1.0
-_Released November 14, 2014_
+_Released November 17, 2014_
 
 * Updated to use the 3.3.0 Journey Builder for APPS SDK.
 * Support for Xcode 6 added as well as iOS8.
