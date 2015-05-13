@@ -20,14 +20,14 @@ public class ETPushNotificationRecipient extends Activity{
 	{
 		super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        Bundle payload = intent.getBundleExtra("payload");
+        Bundle payload = intent.getExtras();
         
 		HashMap<String, String> map = new HashMap<String, String>();
         
 		JSONObject jo = new JSONObject();
 		try {
 			for (String key : payload.keySet()) {
-				jo.put(key, payload.get(key));
+				jo.put(key, JSONObject.wrap(payload.get(key)));
 			}
 		}
 		catch (Exception e) {
@@ -49,14 +49,14 @@ public class ETPushNotificationRecipient extends Activity{
 	protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
-        Bundle payload = intent.getBundleExtra("payload");
+        Bundle payload = intent.getExtras();
         
         HashMap<String, String> map = new HashMap<String, String>();
         
         JSONObject jo = new JSONObject();
         try {
             for (String key : payload.keySet()) {
-                jo.put(key, payload.get(key));
+                jo.put(key, JSONObject.wrap(payload.get(key)));
             }
         }
         catch (Exception e) {
