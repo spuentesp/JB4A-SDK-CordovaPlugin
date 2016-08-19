@@ -216,6 +216,9 @@
         <framework src="libsqlite3.dylib" />
         <framework src="CoreLocation.framework/" />
 
+        <header-file src="src/ios/AppDelegate+JB4A.h" />
+        <source-file src="src/ios/AppDelegate+JB4A.m" />
+
     </platform>
 
 
