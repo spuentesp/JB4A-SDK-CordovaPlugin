@@ -29,7 +29,7 @@ Follow these [instructions](https://code.exacttarget.com/mobilepush/integrating-
 Follow these [instructions](https://code.exacttarget.com/mobilepush/integrating-mobilepush-sdk-your-android-mobile-app#How) for android to provision and setup your [Code@ExactTarget](http://code.exacttarget.com) apps
 
 Once provisioning and [Code@ExactTarget](http://code.exacttarget.com) apps are setup we can install the plugin with the following command:
-**be sure to replace the values below with your Code@ET app ids/access tokens and the GCM Sender IDs.
+**be sure to replace the values below with your Code@ET app ids/access tokens.
 
 ```Bash
 cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin 
@@ -37,60 +37,37 @@ cordova plugin add https://github.com/exacttarget/MobilePushSDK-CordovaPlugin
 	--variable DEVACCESSTOKEN='yay73bzx6eygw8ypaqr67fvt'
 	--variable PRODAPPID='35a19ebc-50ae-4ed5-9d6c-404290ada3cd'
 	--variable PRODACCESSTOKEN='cghknp9rjrmk9pkf6qh392u3'
-	--variable GCMSENDERIDDEV='123456'
-	--variable GCMSENDERIDPROD='123456'
 	--variable USEGEO='true'
 	--variable USEANALYTICS='true'
 ```
 
-### Android Installation
+### Android usage
 
-#### Add the android gcm library to your project
+* The push service must be configure as soon as posible, in the first seconds of the app launching.
+* The devices doesn't receive push notifications after about 3 minutes since it has been configured.
+* Add in `config.xml` for the android platform node:
 
-1. Via terminal use comand 'android' this will open the android sdk manager
+```
+    <preference name="android-minSdkVersion" value="15" />
+```
 
-2. Under extras choose the Google Play Services library
+* Usage:
 
-3. Update the GCM library with the command ```android update lib-project --path path/to/android/sdk/lib/project --target '<android api version you want to target>'```. You can get a list of the currently installed targets with command ```android list targets```.
+```js
+    var pushParams = {
+        appId: 'appId',
+        accessToken: 'accessToken',
+        gcmSenderId: 'gcmSenderId'
+    };
 
-4. Add ```android.library.reference.2=relative/path/from/local.properties/to/android/sdk/installation/extras/google/google_play_services/libproject/google-play-services_lib``` to the Android platforms local.properties file.
- **Note the number after reference as this needs to be above any current references that are in your local.properties or project.properties files.**
-
-#### Add the following lines of code to the main activity class in your project, usually ```platforms/android/src/packageName/<projectname>/<class>.java```. This is needed for analytics.
-
-```java
-@Override
-
-protected void onResume() {
-	super.onResume(); 
-	try {
-		ETPush.pushManager().activityResumed(this); 
-	}
-	catch (ETException e) {
-
-	Log.e(TAG, e.getMessage(), e);
-	}
-} 
-
-@Override
-protected void onPause() { 
-	super.onPause();
-	try { 
-		ETPush.pushManager().activityPaused(this);
-	}
-
-	catch (ETException e) {
-		Log.e(TAG, e.getMessage(), e); 
-	}
-}
+    ETPush.configurePush(pushParams, function(){
+        //Success
+    }, function(error){
+        //Error
+    });
 ```
 
 ### iOS Installation
 
 #### [Changed in this fork]
-There's no need to change or add anything in sorce code. All changes are implemented in a new AppDelegate Category. 
-
-
-
-
-
+There's no need to change or add anything in sorce code. All changes are implemented in a new AppDelegate Category.

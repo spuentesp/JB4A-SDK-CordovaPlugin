@@ -48,30 +48,6 @@ var exec = require('cordova/exec');
     getAttribute: function(SuccessCallback, errorCallback, name) {
         cordova.exec(SuccessCallback, errorCallback, "ETPush", "getAttribute", [name]);
     },
-    //ANDROID ONLY enable geolocation
-
-//      ETPush.enableGeolocation(success, error);
-    enableGeolocation: function(SuccessCallback, errorCallback) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "enableGeoLocation", []);
-    },
-    //ANDROID ONLY disable geolocation
-
-//      ETPush.disableGeolocation(success, error);
-    disableGeolocation: function(SuccessCallback, errorCallback) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "disableGeoLocation", []);
-    },
-    //ANDROID ONLY Opt in to push notifications
-
-//      ETPush.enablePush(success, error);
-    enablePush: function (SuccessCallback, errorCallback) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "enablePush", []);
-    }, 
-    //ANDROID ONLY Opt out of push notifications
-
-//      ETPush.disablePush(success, error);
-    disablePush: function(SuccessCallback, errorCallback) {
-        cordova.exec(SuccessCallback, errorCallback, "ETPush", "disablePush", []);
-    },
     //get the unique device identifier
 
 //      ETPush.getDeviceID(success, error);
@@ -113,5 +89,15 @@ var exec = require('cordova/exec');
  //     ETPush.resetBadgeCount(success, error);
     resetBadgeCount: function(SuccessCallback, errorCallback) {
          cordova.exec(SuccessCallback, errorCallback, "ETPush", "resetBadgeCount", []);       
-    },   
+    },
+
+     //ANDROID custom implementation using the with the new SDK
+
+     configurePush: function(parameters, successCallback, errorCallback) {
+         cordova.exec(successCallback, errorCallback, "ExactTarget", "configurePush", [parameters]);
+     },
+
+     setAttributes: function(parameters, successCallback, errorCallback) {
+         cordova.exec(successCallback, errorCallback, "ExactTarget", "setAttributes", [parameters]);
+     }
 };
