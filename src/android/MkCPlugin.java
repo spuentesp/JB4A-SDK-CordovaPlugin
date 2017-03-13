@@ -105,8 +105,6 @@ public class MkCPlugin extends CordovaPlugin {
             String accessToken;
             String gcmSenderID;
             
-            if (isDebuggable) {
-                ETPush.setLogLevel(Log.DEBUG);
                 
             if(msg != null && msg.length() > 0) {
                 
