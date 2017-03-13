@@ -54,12 +54,10 @@ public class MkCPlugin extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         
         if (action.equals("getDeviceId")) {
-            String message = args.getString(0);
             getDeviceId(message,callbackContext);
             return true;
         }
         if (action.equals("getSDKState")) {
-            String message = args.getString(0);
             getSDKState(message,callbackContext);
             return true;
         }
@@ -101,24 +99,29 @@ public class MkCPlugin extends CordovaPlugin {
         
         
         try {
-            JSONObject msg = new JSONObject(message);
+            
+            Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            String appID;
+            String accessToken;
+            String gcmSenderID;
+            
+            if (isDebuggable) {
+                ETPush.setLogLevel(Log.DEBUG);
+                
             if(msg != null && msg.length() > 0) {
-                Log.i(TAG, msg.getString("etAppId"));
-                Log.i(TAG, msg.getString("accessToken"));
-                Log.i(TAG, msg.getString("gcmSenderId"));
+                
+                appID = bundle.getString("ETApplicationID");
+                accessToken = bundle.getString("AccessToken");
+                gcmSenderID = bundle.getString("GCMSenderID");
+                
+                Log.i(TAG, appID);
+                Log.i(TAG, accessToken);
+                Log.i(TAG, gcmSenderID);
                 
                 config = new ETPushConfig.Builder(application)
-                .setEtAppId(msg.getString("etAppId"))
-                .setAccessToken(msg.getString("accessToken"))
-                .setGcmSenderId(msg.getString("gcmSenderId"))
-                .setAnalyticsEnabled(true)    // ET Analytics, default = false
-                .setWamaEnabled(true)
-                .build();
-                
-                config = new ETPushConfig.Builder(application)
-                .setEtAppId(msg.getString("etAppId"))
-                .setAccessToken(msg.getString("accessToken"))
-                .setGcmSenderId(msg.getString("gcmSenderId"))
+                .setEtAppId(appID)
+                .setAccessToken(accessToken)
+                .setGcmSenderId(gcmSenderID)
                 .setAnalyticsEnabled(true)    // ET Analytics, default = false
                 .setWamaEnabled(true)
                 .build();

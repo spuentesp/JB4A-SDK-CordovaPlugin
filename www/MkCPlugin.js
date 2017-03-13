@@ -1,14 +1,18 @@
 
 var exec = require('cordova/exec');
 
-exports.getDeviceId = function(arg0, success, error) {
-    exec(success, error, "MkCPlugin", "getDeviceId", [arg0]);
+exports.getDeviceId = function(success, error) {
+    exec(success, error, "MkCPlugin", "getDeviceId", []);
 };
 
-exports.initMkC = function(arg0, success, error) {
-    exec(success, error, "MkCPlugin", "initMkC", [arg0]);
+exports.initMkC = function( success, error) {
+    exec(success, error, "MkCPlugin", "initMkC", []);
 };
 
-exports.getSDKState = function(arg0, success, error) {
-    exec(success, error, "MkCPlugin", "getSDKState", [arg0]);
+exports.getSDKState = function(success, error) {
+    exec(success, error, "MkCPlugin", "getSDKState", []);
+};
+
+exports.getSDKState = function(callback,success, error) {
+    exec(success, error, "MkCPlugin", "registerForNotifications", [arg0]);
 };
