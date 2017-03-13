@@ -1,89 +1,174 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.exacttarget.etpushsdk"
-    version="0.1.0">
-    <name>ETPush</name>
-    <description>ET SDK Cordova Plugin</description>
-    <license>Apache 2.0</license>
-    <author>Salesforce Marketing Cloud</author>
-    <keywords>cordova,Salesforce Marketing Cloud, push, marketing cloud, exacttarget</keywords>
-
-    <js-module src="www/push.js" name="ETPush">
-        <clobbers target="ETPush" />
-    </js-module>
-
-    <preference name="DEVAPPID" />
-    <preference name="DEVACCESSTOKEN" />
-    <preference name="PRODAPPID" />
-    <preference name="PRODACCESSTOKEN" />
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cl.spuentes.mkcplugin" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>MkCPlugin</name>
+	<DESCRIPTION>implementacion de marketing cloud de salesforce push para Cordova 6</DESCRIPTION>
+    
+    
+    
+    <preference name="ETAPPID" />
+    <preference name="ACCESSTOKEN" />
+    <preference name="GCMSENDERID" />
     <preference name="USEGEO" />
     <preference name="USEANALYTICS" />
-
-    <!-- android -->
-    <platform name="android">
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="ExactTarget" >
-                <param name="android-package" value="com.atsistemas.exacttarget.ExactTarget"/>
-            </feature>
-        </config-file>
-        <source-file src="src/android/ExactTarget.java" target-dir="src/com/atsistemas/exacttarget" />
-        <source-file src="src/android/build-extras.gradle" target-dir="."/>
-    </platform>
-
-    <!-- ios -->
-    <platform name="ios">
+    
+    
+	<js-module name="MkCPlugin" src="www/MkCPlugin.js">
+		<clobbers target="MkCPlugin" />
+	</js-module>
+	<platform name="ios">
         <config-file target="*-Info.plist" parent="ETAppSettings">
-                <dict>
-                    <key>ApplicationID-Dev</key>
-                    <string>$DEVAPPID</string>
-                    <key>AccessToken-Dev</key>
-                    <string>$DEVACCESSTOKEN</string>
-                    <key>ApplicationID-Prod</key>
-                    <string>$PRODAPPID</string>
-                    <key>AccessToken-Prod</key>
-                    <string>$PRODACCESSTOKEN</string>
-                    <key>UseGeofences</key>
-                    <string>$USEGEO</string>
-                    <key>UseAnalytics</key>
-                    <string>$USEANALYTICS</string>
-                </dict>
+            <dict>
+                <key>ETApplicationID</key>
+                <string>$ETAPPID</string>
+                <key>AccessToken</key>
+                <string>$ACCESSTOKEN</string>
+                <key>UseGeofences</key>
+                <string>$USEGEO</string>
+                <key>UseAnalytics</key>
+                <string>$USEANALYTICS</string>
+            </dict>
         </config-file>
-        <config-file target="config.xml" parent="/*">
-            <feature name="ETPush">
-                <param name="ios-package" value="ETSdkWrapper"/>
-            </feature>
-        </config-file>
-        <header-file src="src/ios/ETSdkWrapper.h" />
-        <source-file src="src/ios/ETSdkWrapper.m" />
-        <source-file src="src/ios/etpushsdk/libetpushsdk-3.3.0.a" framework="true" />
-        <header-file src="src/ios/etpushsdk/ETBulkUpdateShim.h" />
-        <header-file src="src/ios/etpushsdk/ETEvent.h" />
-        <header-file src="src/ios/etpushsdk/ETFenceMessage.h" />
-        <header-file src="src/ios/etpushsdk/ETGenericUpdate.h" />
-        <header-file src="src/ios/etpushsdk/ETKeyValueStore.h" />
-        <header-file src="src/ios/etpushsdk/ETLandingPagePresenter.h" />
-        <header-file src="src/ios/etpushsdk/ETLocationManager.h" />
-        <header-file src="src/ios/etpushsdk/ETLocationUpdate.h" />
-        <header-file src="src/ios/etpushsdk/ETMessage.h" />
-        <header-file src="src/ios/etpushsdk/ETPhoneHome.h" />
-        <header-file src="src/ios/etpushsdk/ETPush.h" />
-        <header-file src="src/ios/etpushsdk/ETRegion.h" />
-        <header-file src="src/ios/etpushsdk/ETRegistration.h" />
-        <header-file src="src/ios/etpushsdk/ETSqliteHelper.h" />
-        <header-file src="src/ios/etpushsdk/ETStatsUpdate.h" />
-        <header-file src="src/ios/etpushsdk/ETTestsHelper.h" />
-        <header-file src="src/ios/etpushsdk/ETURLConnection.h" />
-        <header-file src="src/ios/etpushsdk/ExactTargetEnhancedPushDataSource.h" />
-        <header-file src="src/ios/etpushsdk/PushConstants.h" />
+		<config-file parent="/*" target="config.xml">
+			<feature name="MkCPlugin">
+				<param name="ios-package" value="MkCPlugin" />
+			</feature>
+		</config-file>
+        <header-file src="src/ios/MkCPlugin.h" />
+		<source-file src="src/ios/MkCPlugin.m" />
+        <header-file src="src/ios/AppDelegate+MkCPlugin.h" />
+        <source-file src="src/ios/AppDelegate+MkCPlugin.m" />
+        <source-file src="src/ios/lib/libJB4ASDK-4.7.0.020600001.a" framework="true" />
+        <header-file src="src/ios/lib/ETAnalytics.h" />
+        <header-file src="src/ios/lib/ETCloudPage.h" />
+        <header-file src="src/ios/lib/ETCloudPageDataSource.h" />
+        <header-file src="src/ios/lib/ETEventMessage.h" />
+        <header-file src="src/ios/lib/ETEventRegion.h" />
+        <header-file src="src/ios/lib/ETGenericUpdate.h" />
+        <header-file src="src/ios/lib/ETLandingPagePresenter.h" />
+        <header-file src="src/ios/lib/ETLocationManager.h" />
+        <header-file src="src/ios/lib/ETMessage.h" />
+        <header-file src="src/ios/lib/ETPush.h" />
+        <header-file src="src/ios/lib/ETRegion.h" />
+        <header-file src="src/ios/lib/ETWKLandingPagePresenter.h" />
+        <header-file src="src/ios/lib/ExactTargetEnhancedPushDataSource.h" />
+        <header-file src="src/ios/lib/JB4ASDK-Bridging-Header.h" />
+        <header-file src="src/ios/lib/PICart.h" />
+        <header-file src="src/ios/lib/PICartItem.h" />
+        <header-file src="src/ios/lib/PIOrder.h" />
+        <header-file src="src/ios/lib/PushConstants.h" />
         <framework src="libsqlite3.dylib" />
         <framework src="CoreLocation.framework/" />
+        <framework src="WebKit.framework/" />
+	</platform>
+    
+    
+    
+    
+    
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="MkCPlugin"><param name="android-package" value="cl.spuentes.mkcplugin.MkCPlugin" />
+			</feature>
+		</config-file>
+		<source-file src="src/android/MkCPlugin.java" target-dir="src/cl/spuentes/mkcplugin" />
+        <source-file src="src/android/proguard-project.txt" target-dir="."/>
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference"/>
+        
+        
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service
+                android:name="com.exacttarget.etpushsdk.ETPushService"
+                android:exported="false" >
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                </intent-filter>
+            </service>
+            <receiver
+                android:name="com.exacttarget.etpushsdk.ETPushReceiver"
+                android:exported="true"
+                android:permission="com.google.android.c2dm.permission.SEND" >
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                    <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                    <action android:name="android.intent.action.AIRPLANE_MODE" />
+                    <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                    <action android:name="com.exacttarget.etpushsdk.SEND_REGISTRATION" />
+                    <action android:name="${applicationId}.MESSAGE_OPENED" />
+                    
+                    <category android:name="${applicationId}" />
+                </intent-filter>
+            </receiver>
+            <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+            <!--receiver
+                android:name="com.google.android.gcm.GcmBroadcastReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND" >
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                    <category android:name="${applicationId}" />
+                </intent-filter>
+            </receiver-->
+            
+            <!-- ETLandingPagePresenter is the default OD and CloudPage handler -->
+            <activity
+            android:name="com.exacttarget.etpushsdk.ETLandingPagePresenter"
+            android:label="Landing Page" />
+            
+            <!-- ETPushReceiver and Service -->
+            
+            
+            
+            <service
+                android:name="com.exacttarget.etpushsdk.ETInstanceIdListenerService"
+                android:exported="false" >
+                <intent-filter>
+                    <action android:name="com.google.android.gms.iid.InstanceID" />
+                </intent-filter>
+            </service>
+            <!-- ETPushReceiver and Service -->
+            
+            
+            <!-- ETLocationReceiver and Service -->
+            <receiver android:name="com.exacttarget.etpushsdk.ETLocationReceiver" />
+            
+            <service
+            android:name="com.exacttarget.etpushsdk.ETLocationService"
+            android:enabled="true" />
+            <!-- ETLocationReceiver and Service -->
 
-        <header-file src="src/ios/AppDelegate+JB4A.h" />
-        <source-file src="src/ios/AppDelegate+JB4A.m" />
-
-    </platform>
-
-
+            <meta-data android:name="ETApplicationID" android:value="@string/et_app_id" />
+            <meta-data android:name="ETAccessToken" android:value="@string/et_access_token" />
+            <meta-data android:name="GCMSenderID" android:value="@string/gcm_sender_id" />
+            <meta-data android:name="UseGeofences" android:value="@string/UseGeofences" />
+            <meta-data android:name="UseAnalytics" android:value="@string/UseAnalytics" />
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <!-- ExactTarget required permissions -->
+            <permission android:name="${applicationId}.permission.C2D_MESSAGE"
+            android:protectionLevel="signature"/>
+            <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE"/>
+            <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+            <uses-permission android:name="android.permission.WAKE_LOCK"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <!-- END ExactTarget Required Permissions -->
+            
+            <!-- ExactTarget Permissions for location and region monitoring -->
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+            <!-- END ExactTarget location and region monitoring Permissions -->
+        </config-file>
+        
+        
+        
+	</platform>
 </plugin>

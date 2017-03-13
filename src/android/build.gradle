@@ -1,0 +1,36 @@
+def manifest = new XmlSlurper().parse(file("AndroidManifest.xml"))
+android.defaultConfig.applicationId manifest.@package.text()
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "http://salesforce-marketingcloud.github.io/JB4A-SDK-Android/repository"
+        }
+    }
+}
+android {
+    defaultConfig {
+        minSdkVersion 16
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+    buildToolsVersion "25.0.1"
+    dexOptions {
+    javaMaxHeapSize "4g"
+	}
+}
+dependencies {
+        // ET SDK
+        compile 'com.exacttarget.etpushsdk:etsdk:4.7.1@aar'
+        compile 'com.google.android.gms:play-services:10.2.0'
+
+        // Google Play Services for Location and Google Cloud Messaging
+        compile 'com.google.android.gms:play-services-location:10.2.0'
+        compile 'com.google.android.gms:play-services-gcm:10.2.0'
+
+        // Google's Support v4 for Notification compatibility
+        compile 'com.android.support:support-v4:24.2.0'
+    }
+
