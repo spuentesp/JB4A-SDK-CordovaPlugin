@@ -30,7 +30,9 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotifications:)
                                                  name:@"UIApplicationDidFinishLaunchingNotification" object:nil];
+    NSLog(@"swizzled!");
     return [self swizzled_init];
+    
 }
 
 - (void) initNotifications:(NSNotification *)notification
@@ -44,13 +46,15 @@
         BOOL useAnalytics = [[ETSettings objectForKey:@"UseAnalytics"] boolValue];
         NSString* appID = [ETSettings objectForKey:@"ETApplicationID"];
         NSString* accessToken = [ETSettings objectForKey:@"AccessToken"];
-        //use your production app id and token you setup in code.exacttarget.com here
-        
         [[ETPush pushManager] configureSDKWithAppID:appID
                                      andAccessToken:accessToken
                                       withAnalytics:useAnalytics
                                 andLocationServices:useGeoLocation
-                                      andCloudPages:NO];
+                               andProximityServices:NO
+                                      andCloudPages:NO
+                                    withPIAnalytics:NO
+                                              error:nil];
+        NSLog(@"notificaciones");
         //inicializa notificaciones
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
                                                 UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert categories:nil];
@@ -62,7 +66,7 @@
         NSString* deviceID = [ETPush safeDeviceIdentifier]; NSLog(@"token %@", token);
         NSLog(@"Device ID %@", deviceID);
         if (useGeoLocation) {
-            [[ETLocationManager locationManager] startWatchingLocation];
+            [[ETLocationManager sharedInstance] startWatchingLocation];
         }
     }
 }
@@ -77,7 +81,7 @@
         NSLog(@"json error: %@", error);
     } else {
         
-        [ETSdkWrapper.etPlugin notifyOfMessage:jsonData];
+        [MkCPlugin.mkcInstance notifyOfMessage:jsonData];
     }
 }
 
@@ -107,10 +111,12 @@
         NSLog(@"jsn error: %@", error);
     } else {
         
-        [ETSdkWrapper.etPlugin notifyOfMessage:jsonData];
+        [MkCPlugin.mkcInstance notifyOfMessage:jsonData];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:CDVLocalNotification object:notification];
 }
+
+
 
 
 @end

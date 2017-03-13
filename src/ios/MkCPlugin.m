@@ -7,10 +7,20 @@
 @implementation MkCPlugin
 
 static NSString *notificationCallback;
-static ETSdkWrapper *etInstance;
+static MkCPlugin *mkcInstance;
 
-+ (ETSdkWrapper *) etInstance {
-    return etInstance;
++ (MkCPlugin *) mkcInstance {
+    return mkcInstance;
+}
+
+- (void)initMkC:(CDVInvokedUrlCommand*)command
+{
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+    
 }
 
 - (void)getDeviceId:(CDVInvokedUrlCommand*)command
@@ -19,7 +29,7 @@ static ETSdkWrapper *etInstance;
     //NSString* params = [command.arguments objectAtIndex:0];
     NSString* result = [ETPush safeDeviceIdentifier];
     
-
+    
     if (result != nil && [result length] > 0) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
     } else {
@@ -48,7 +58,7 @@ static ETSdkWrapper *etInstance;
 - (void) registerForNotifications:(CDVInvokedUrlCommand *)command
 {
     notificationCallback = [command.arguments objectAtIndex:0];
-    etInstance = self;
+    mkcInstance = self;
     [self.commandDelegate runInBackground:^{
         CDVPluginResult* pluginResult = nil;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:notificationCallback];
@@ -62,7 +72,9 @@ static ETSdkWrapper *etInstance;
     NSString * notifyJS = [NSString stringWithFormat:@"%@('%@');", notificationCallback, JSONString];
     NSLog(@"stringByEvaluatingJavaScriptFromString %@", notifyJS);
     
-    NSString *jsResults = [self.webView stringByEvaluatingJavaScriptFromString:notifyJS];
+    //NSString *jsResults = [self.webView stringByEvaluatingJavaScriptFromString:notifyJS];
+    [self.commandDelegate evalJs:notifyJS];
+    
 }
 
 @end
