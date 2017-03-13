@@ -13,6 +13,6 @@ exports.getSDKState = function(success, error) {
     exec(success, error, "MkCPlugin", "getSDKState", []);
 };
 
-exports.getSDKState = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", [arg0]);
+exports.registerForNotifications = function(callback,success, error) {
+    exec(success, error, "MkCPlugin", "registerForNotifications", [callback]);
 };
