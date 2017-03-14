@@ -11,6 +11,8 @@ getDeviceId
 
 ## Installation
 
+cordova plugin add https://github.com/spuentesp/JB4A-SDK-CordovaPlugin/ --variable ETAPPID=XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX --variable ACCESSTOKEN=XXXXXXXXXX --variable GCMSENDERID=XXXXXXXX --variable USEGEO=true --variable USEANALYTICS=true
+
 ## Usage
 
 To init:
