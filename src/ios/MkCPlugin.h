@@ -1,6 +1,7 @@
 /********* MkCPlugin.h Cordova Plugin Implementation *******/
 
-#import <Cordova/CDV.h>
+#import <UIKit/UIKit.h>
+#import <Cordova/CDVPlugin.h>
 
 @interface MkCPlugin : CDVPlugin {
     // Member variables go here.

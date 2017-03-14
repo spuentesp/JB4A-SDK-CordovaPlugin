@@ -1,8 +1,11 @@
 /********* MkCPlugin.m Cordova Plugin Implementation *******/
 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+
 #import <Cordova/CDV.h>
-#import "ETPush.h"
 #import "MkCPlugin.h"
+#import "ETPush.h"
 
 @implementation MkCPlugin
 
@@ -25,35 +28,37 @@ static MkCPlugin *mkcInstance;
 
 - (void)getDeviceId:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
     //NSString* params = [command.arguments objectAtIndex:0];
     NSString* result = [ETPush safeDeviceIdentifier];
     
-    
-    if (result != nil && [result length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    
+    [self.commandDelegate runInBackground:^{
+        NSLog(@"%@", result);
+        CDVPluginResult* pluginResult = nil;
+        if (result != nil) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        }
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
 
 - (void)getSDKState:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
     //NSString* params = [command.arguments objectAtIndex:0];
     NSString* result = [ETPush getSDKState];
     
-    if (result != nil && [result length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    
+    [self.commandDelegate runInBackground:^{
+        NSLog(@"%@", result);
+        CDVPluginResult* pluginResult = nil;
+        if (result != nil) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        }
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
-
 
 - (void) registerForNotifications:(CDVInvokedUrlCommand *)command
 {
@@ -72,8 +77,10 @@ static MkCPlugin *mkcInstance;
     NSString * notifyJS = [NSString stringWithFormat:@"%@('%@');", notificationCallback, JSONString];
     NSLog(@"stringByEvaluatingJavaScriptFromString %@", notifyJS);
     
-    //NSString *jsResults = [self.webView stringByEvaluatingJavaScriptFromString:notifyJS];
-    [self.commandDelegate evalJs:notifyJS];
+    UIWebView *view = self.webView;
+    
+    NSString *jsResults = [view stringByEvaluatingJavaScriptFromString:notifyJS];
+    
     
 }
 

@@ -39,6 +39,7 @@
 {
     if (notification)
     {
+        BOOL sdkSuccess = NO;
         NSDictionary *launchOptions = [notification userInfo];
         NSBundle* mainBundle = [NSBundle mainBundle];
         NSDictionary* ETSettings = [mainBundle objectForInfoDictionaryKey:@"ETAppSettings"];
@@ -46,29 +47,62 @@
         BOOL useAnalytics = [[ETSettings objectForKey:@"UseAnalytics"] boolValue];
         NSString* appID = [ETSettings objectForKey:@"ETApplicationID"];
         NSString* accessToken = [ETSettings objectForKey:@"AccessToken"];
-        [[ETPush pushManager] configureSDKWithAppID:appID
-                                     andAccessToken:accessToken
-                                      withAnalytics:useAnalytics
-                                andLocationServices:useGeoLocation
-                               andProximityServices:NO
-                                      andCloudPages:NO
-                                    withPIAnalytics:NO
-                                              error:nil];
+        NSMutableDictionary* details = [NSMutableDictionary dictionary];
+        [details setValue:@"error configurando sdk con appid" forKey:NSLocalizedDescriptionKey];
+        
+        
+        NSError *err = nil;
+        
+        
+        sdkSuccess = [[ETPush pushManager] configureSDKWithAppID:appID
+                                                  andAccessToken:accessToken
+                                                   withAnalytics:useAnalytics
+                                             andLocationServices:useGeoLocation
+                                            andProximityServices:NO
+                                                   andCloudPages:NO
+                                                 withPIAnalytics:NO
+                                                           error:&err];
         NSLog(@"notificaciones");
         //inicializa notificaciones
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
-                                                UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert categories:nil];
-        [[ETPush pushManager] registerUserNotificationSettings:settings];
-        [[ETPush pushManager] registerForRemoteNotifications];
-        [[ETPush pushManager] shouldDisplayAlertViewIfPushReceived:YES];
-        [[ETPush pushManager] applicationLaunchedWithOptions:launchOptions];
-        NSString* token = [[ETPush pushManager] deviceToken];
-        NSString* deviceID = [ETPush safeDeviceIdentifier]; NSLog(@"token %@", token);
-        NSLog(@"Device ID %@", deviceID);
-        if (useGeoLocation) {
-            [[ETLocationManager sharedInstance] startWatchingLocation];
+        
+        if (!sdkSuccess) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // something failed in the configureSDKWithAppID call - show what the error is
+                [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed configureSDKWithAppID!", @"Failed configureSDKWithAppID!")
+                                            message:[err localizedDescription]
+                                           delegate:nil
+                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                  otherButtonTitles:nil] show];
+            });
+        }else {
+            // register for push notifications - enable all notification types, no categories
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound |
+                                                    UIUserNotificationTypeAlert
+                                                                                     categories:nil];
+            
+            [[ETPush pushManager] registerUserNotificationSettings:settings];
+            [[ETPush pushManager] registerForRemoteNotifications];
+            
+            // inform the JB4ASDK of the launch options
+            // possibly UIApplicationLaunchOptionsRemoteNotificationKey or UIApplicationLaunchOptionsLocalNotificationKey
+            [[ETPush pushManager] applicationLaunchedWithOptions:launchOptions];
+            
+            // This method is required in order for location messaging to work and the user's location to be processed
+            // Only call this method if you have LocationServices set to YES in configureSDK()
+            // [[ETLocationManager sharedInstance] startWatchingLocation];
+            NSString* token = [[ETPush pushManager] deviceToken];
+            NSString* deviceID = [ETPush safeDeviceIdentifier]; NSLog(@"token %@", token);
+            NSLog(@"Device ID %@", deviceID);
+            if (useGeoLocation) {
+                [[ETLocationManager sharedInstance] startWatchingLocation];
+            }
         }
+        
     }
+    
+    
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -83,6 +117,8 @@
         
         [MkCPlugin.mkcInstance notifyOfMessage:jsonData];
     }
+    
+    
 }
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -94,6 +130,7 @@
                         stringByReplacingOccurrencesOfString: @">" withString: @""]
                        stringByReplacingOccurrencesOfString: @" " withString: @""];
     [[NSNotificationCenter defaultCenter] postNotificationName:CDVRemoteNotification object:token];
+    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
