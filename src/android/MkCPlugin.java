@@ -154,10 +154,7 @@ public class MkCPlugin extends CordovaPlugin {
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error("Error during etPush Configuration");
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
-            callbackContext.error("Incorrect parameters");
-        } catch (Exception e) {
+        }  catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error("Unknown Error");
         }
