@@ -54,11 +54,11 @@ public class MkCPlugin extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         
         if (action.equals("getDeviceId")) {
-            getDeviceId(message,callbackContext);
+            getDeviceId(null,callbackContext);
             return true;
         }
         if (action.equals("getSDKState")) {
-            getSDKState(message,callbackContext);
+            getSDKState(null,callbackContext);
             return true;
         }
         if (action.equals("initMkC")) {
