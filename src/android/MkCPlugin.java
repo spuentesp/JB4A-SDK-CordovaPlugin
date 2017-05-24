@@ -87,6 +87,10 @@ public class MkCPlugin extends CordovaPlugin {
             getSDKState(null,callbackContext);
             return true;
         }
+        if (action.equals("initMkC")) {
+            this.initMkC(null, callbackContext);
+            return true;
+        }
         return false;
     }
     
@@ -112,7 +116,8 @@ public class MkCPlugin extends CordovaPlugin {
         callbackContext.success(etPush.getSDKState());
     }
 
-    private void init(){
+    private void initMkC(String message, CallbackContext callbackContext) {
+
 
         if(context == null){
             context = this.cordova.getActivity().getApplicationContext();
