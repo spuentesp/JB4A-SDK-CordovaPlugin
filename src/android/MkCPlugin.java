@@ -97,7 +97,7 @@ public class MkCPlugin extends CordovaPlugin {
             try {
                 etPush = ETPush.getInstance();
             } catch (ETException e) {
-                callbackContext.error("ETPush not initialized");
+                Log.e(TAG, e.getMessage());
             }
         }
         callbackContext.success(etPush.getDeviceId());
@@ -108,7 +108,7 @@ public class MkCPlugin extends CordovaPlugin {
             try {
                 etPush = ETPush.getInstance();
             } catch (ETException e) {
-                callbackContext.error("ETPush not initialized");
+                Log.e(TAG, e.getMessage());
             }
         }
         callbackContext.success(etPush.getSDKState());
@@ -145,10 +145,13 @@ public class MkCPlugin extends CordovaPlugin {
             Log.e(TAG, "Configuring SDK");
             etPush.configureSdk(config, listener);
             Log.e(TAG, "SDK Configured");
+            callbackContext.success(etPush.getDeviceId());
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
+            ccallbackContext.error('error::'+e.getMessage());
         }  catch (Exception e) {
             Log.e(TAG, e.getMessage());
+            callbackContext.error('error::'+e.getMessage());
         }
     }
 }
