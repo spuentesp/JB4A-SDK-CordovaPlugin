@@ -106,16 +106,6 @@ public class MkCPlugin extends CordovaPlugin {
             application = this.cordova.getActivity().getApplication();
             Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
 
-            Log.e(TAG, "ETAPPID::");
-            Log.e(TAG, bundle.getString("ETApplicationID"));
-            Log.e(TAG, "ACCESS TOKEN");
-            Log.e(TAG, bundle.getString("ETAccessToken"));
-            Log.e(TAG, "GCM SENDER ID");
-            Log.e(TAG, bundle.getString("GCMSenderID"));
-            Log.e(TAG, "ANALYTICS ENABLED?");
-            Log.e(TAG, bundle.getString("UseAnalytics"));
-            Log.e(TAG, "GEOFENCES ENABLED?");
-            Log.e(TAG, bundle.getString("UseGeofences"));
 
             ETPushConfig config = new ETPushConfig.Builder(application)
                     .setEtAppId(bundle.getString("ETApplicationID"))
@@ -124,8 +114,7 @@ public class MkCPlugin extends CordovaPlugin {
                     .setAnalyticsEnabled(Boolean.valueOf(bundle.getString("UseAnalytics")))    // ET Analytics, default = false
                     .setWamaEnabled(Boolean.valueOf(bundle.getString("UseGeofences")))
                     .build();
-            Log.e(TAG, "Configuring SDK");
-            etPush.configureSdk(config, listener);
+
             ETPushConfigureSdkListener listener = new ETPushConfigureSdkListener() {
                 @Override
                 public void onETPushConfigurationSuccess(ETPush etPush, ETRequestStatus etRequestStatus) {
@@ -149,6 +138,8 @@ public class MkCPlugin extends CordovaPlugin {
                     callbackContext.error(e.getMessage());
                 }
             };
+            Log.i(TAG, "Configuring SDK");
+            etPush.configureSdk(config, listener);
 
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
