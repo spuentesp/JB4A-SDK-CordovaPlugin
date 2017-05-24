@@ -44,29 +44,7 @@ public class MkCPlugin extends CordovaPlugin {
     public static Activity mainActivity;
     private static CordovaWebView gWebView;
 
-    ETPushConfigureSdkListener listener = new ETPushConfigureSdkListener() {
-        @Override
-        public void onETPushConfigurationSuccess(ETPush etPush, ETRequestStatus etRequestStatus) {
-            Log.i(TAG, "onETPushConfigurationSuccess");
-            Log.i(TAG, "GooglePlayServiceStatusCode :: " + String.valueOf(etRequestStatus.getGooglePlayServiceStatusCode()));
-            Log.i(TAG, "GoogleApiAvailability :: " + String.valueOf(GoogleApiAvailability.getInstance().isUserResolvableError(etRequestStatus.getGooglePlayServiceStatusCode())));
 
-            // Verify Google Play Services availability and notify the user of any exceptions
-            if (etRequestStatus.getGooglePlayServiceStatusCode() != ConnectionResult.SUCCESS && GoogleApiAvailability.getInstance().isUserResolvableError(etRequestStatus.getGooglePlayServiceStatusCode())) {
-                Log.e(TAG, "GoogleApiERROR");
-                GoogleApiAvailability.getInstance().showErrorNotification(application.getApplicationContext(), etRequestStatus.getGooglePlayServiceStatusCode());
-            }
-            callbackContext.success(etPush.getDeviceId());
-        }
-
-        @Override
-        public void onETPushConfigurationFailed(ETException e) {
-            // If we're here then your application will _NOT_ receive push notifications.
-            Log.e(TAG, "onETPushConfigurationFailed");
-            Log.e(TAG, e.getMessage());
-            callbackContext.error(e.getMessage());
-        }
-    };
 
 
 
@@ -148,7 +126,29 @@ public class MkCPlugin extends CordovaPlugin {
                     .build();
             Log.e(TAG, "Configuring SDK");
             etPush.configureSdk(config, listener);
-            Log.e(TAG, "SDK Configured");
+            ETPushConfigureSdkListener listener = new ETPushConfigureSdkListener() {
+                @Override
+                public void onETPushConfigurationSuccess(ETPush etPush, ETRequestStatus etRequestStatus) {
+                    Log.i(TAG, "onETPushConfigurationSuccess");
+                    Log.i(TAG, "GooglePlayServiceStatusCode :: " + String.valueOf(etRequestStatus.getGooglePlayServiceStatusCode()));
+                    Log.i(TAG, "GoogleApiAvailability :: " + String.valueOf(GoogleApiAvailability.getInstance().isUserResolvableError(etRequestStatus.getGooglePlayServiceStatusCode())));
+
+                    // Verify Google Play Services availability and notify the user of any exceptions
+                    if (etRequestStatus.getGooglePlayServiceStatusCode() != ConnectionResult.SUCCESS && GoogleApiAvailability.getInstance().isUserResolvableError(etRequestStatus.getGooglePlayServiceStatusCode())) {
+                        Log.e(TAG, "GoogleApiERROR");
+                        GoogleApiAvailability.getInstance().showErrorNotification(application.getApplicationContext(), etRequestStatus.getGooglePlayServiceStatusCode());
+                    }
+                    callbackContext.success(etPush.getDeviceId());
+                }
+
+                @Override
+                public void onETPushConfigurationFailed(ETException e) {
+                    // If we're here then your application will _NOT_ receive push notifications.
+                    Log.e(TAG, "onETPushConfigurationFailed");
+                    Log.e(TAG, e.getMessage());
+                    callbackContext.error(e.getMessage());
+                }
+            };
 
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
