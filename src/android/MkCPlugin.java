@@ -34,7 +34,7 @@ import org.json.JSONObject;
  */
 public class MkCPlugin extends CordovaPlugin {
     
-    private Application application = this.cordova.getActivity().getApplication();
+    private Application application;
     JSONObject msg;
     private ETPush etPush;
     private String TAG = "MkCPlugin";
@@ -118,6 +118,7 @@ public class MkCPlugin extends CordovaPlugin {
             context = this.cordova.getActivity().getApplicationContext();
         }
         try {
+            application = this.cordova.getActivity().getApplication();
             Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
             ETPushConfig config = new ETPushConfig.Builder(application)
                     .setEtAppId(bundle.getString("ETApplicationID"))
