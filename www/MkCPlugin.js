@@ -6,10 +6,6 @@ exports.getDeviceId = function(success, error) {
     exec(success, error, "MkCPlugin", "getDeviceId", []);
 };
 
-exports.initMkC = function( success, error) {
-    exec(success, error, "MkCPlugin", "initMkC", []);
-};
-
 exports.getSDKState = function(success, error) {
     exec(success, error, "MkCPlugin", "getSDKState", []);
 };

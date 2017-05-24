@@ -120,6 +120,12 @@ public class MkCPlugin extends CordovaPlugin {
         try {
             application = this.cordova.getActivity().getApplication();
             Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            Log.e(TAG, bundle.getString("ETApplicationID"));
+            Log.e(TAG, bundle.getString("AccessToken"));
+            Log.e(TAG, bundle.getString("GCMSenderID"));
+            Log.e(TAG, bundle.getString("UseAnalytics"));
+            Log.e(TAG, bundle.getString("UseGeofences"));
+
             ETPushConfig config = new ETPushConfig.Builder(application)
                     .setEtAppId(bundle.getString("ETApplicationID"))
                     .setAccessToken(bundle.getString("AccessToken"))
