@@ -102,15 +102,7 @@
                 </intent-filter>
             </receiver>
             <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
-            <!--receiver
-                android:name="com.google.android.gcm.GcmBroadcastReceiver"
-                android:permission="com.google.android.c2dm.permission.SEND" >
-                <intent-filter>
-                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                    <category android:name="${applicationId}" />
-                </intent-filter>
-            </receiver-->
+
             
             <!-- ETLandingPagePresenter is the default OD and CloudPage handler -->
             <activity
@@ -118,9 +110,6 @@
             android:label="Landing Page" />
             
             <!-- ETPushReceiver and Service -->
-            
-            
-            
             <service
                 android:name="com.exacttarget.etpushsdk.ETInstanceIdListenerService"
                 android:exported="false" >
@@ -128,7 +117,6 @@
                     <action android:name="com.google.android.gms.iid.InstanceID" />
                 </intent-filter>
             </service>
-            <!-- ETPushReceiver and Service -->
             
             
             <!-- ETLocationReceiver and Service -->
