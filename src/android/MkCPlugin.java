@@ -151,7 +151,7 @@ public class MkCPlugin extends CordovaPlugin {
             callbackContext.success(etPush.getDeviceId());
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
-            ccallbackContext.error(e.getMessage());
+            callbackContext.error(e.getMessage());
         }  catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
