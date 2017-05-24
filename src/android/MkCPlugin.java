@@ -126,7 +126,9 @@ public class MkCPlugin extends CordovaPlugin {
                     .setAnalyticsEnabled(Boolean.valueOf(bundle.getString("UseAnalytics")))    // ET Analytics, default = false
                     .setWamaEnabled(Boolean.valueOf(bundle.getString("UseGeofences")))
                     .build();
+            Log.e(TAG, "Configuring SDK");
             etPush.configureSdk(config, listener);
+            Log.e(TAG, "SDK Configured");
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
         }  catch (Exception e) {
