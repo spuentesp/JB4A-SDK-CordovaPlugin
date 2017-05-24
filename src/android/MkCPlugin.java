@@ -104,24 +104,29 @@ public class MkCPlugin extends CordovaPlugin {
             String appID;
             String accessToken;
             String gcmSenderID;
-            
-                
-            if(msg != null && msg.length() > 0) {
+            String analyticsEnabled;
+            String setWamaEnabled;
+
                 
                 appID = bundle.getString("ETApplicationID");
                 accessToken = bundle.getString("AccessToken");
                 gcmSenderID = bundle.getString("GCMSenderID");
+                analyticsEnabled = bundle.getString("UseAnalytics");
+                setWamaEnabled = bundle.getString("UseGeofences");
+
                 
                 Log.i(TAG, appID);
                 Log.i(TAG, accessToken);
                 Log.i(TAG, gcmSenderID);
+                Log.i(TAG, analyticsEnabled);
+                Log.i(TAG, setWamaEnabled);
                 
                 config = new ETPushConfig.Builder(application)
                 .setEtAppId(appID)
                 .setAccessToken(accessToken)
                 .setGcmSenderId(gcmSenderID)
-                .setAnalyticsEnabled(true)    // ET Analytics, default = false
-                .setWamaEnabled(true)
+                .setAnalyticsEnabled(Boolean.valueOf(analyticsEnabled))    // ET Analytics, default = false
+                .setWamaEnabled(Boolean.valueOf(setWamaEnabled))
                 .build();
                 
                 
@@ -148,9 +153,7 @@ public class MkCPlugin extends CordovaPlugin {
                 };
                 etPush.configureSdk(config, listener);
                 callbackContext.success("etPush sdk Configured successfully");
-            }else{
-                callbackContext.error("Incorrect parameters");
-            }
+
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error("Error during etPush Configuration");
