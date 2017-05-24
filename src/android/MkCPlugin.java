@@ -120,10 +120,11 @@ public class MkCPlugin extends CordovaPlugin {
         try {
             application = this.cordova.getActivity().getApplication();
             Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+
             Log.e(TAG, "ETAPPID::");
             Log.e(TAG, bundle.getString("ETApplicationID"));
             Log.e(TAG, "ACCESS TOKEN");
-            Log.e(TAG, bundle.getString("AccessToken"));
+            Log.e(TAG, bundle.getString("ETAccessToken"));
             Log.e(TAG, "GCM SENDER ID");
             Log.e(TAG, bundle.getString("GCMSenderID"));
             Log.e(TAG, "ANALYTICS ENABLED?");
