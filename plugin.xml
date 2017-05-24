@@ -147,9 +147,9 @@
         </config-file>
         
         <config-file target="res/values/strings.xml" parent="/resources">
-            <string name="et_app_id">$DEVAPPID</string>
-            <string name="et_access_token">$DEVACCESSTOKEN</string>
-            <string name="gcm_sender_id">$GCMSENDERIDDEV</string>
+            <string name="et_app_id">$ETAPPID</string>
+            <string name="et_access_token">$ACCESSTOKEN</string>
+            <string name="gcm_sender_id">$GCMSENDERID</string>
             <string name="UseGeofences">$USEGEO</string>
             <string name="UseAnalytics">$USEANALYTICS</string>
         </config-file>
