@@ -64,11 +64,11 @@ public class MkCPlugin extends CordovaPlugin {
             getSDKState(null,callbackContext);
             return true;
         }
-        if (action.equals("initMkC")) {
+        /*if (action.equals("initMkC")) {
             String message = args.getString(0);
             this.initMkC(message, callbackContext);
             return true;
-        }
+        }*/
         return false;
     }
     
@@ -94,7 +94,7 @@ public class MkCPlugin extends CordovaPlugin {
         callbackContext.success(etPush.getSDKState());
     }
     
-    private void initMkC(String message, CallbackContext callbackContext) {
+    /*private void initMkC(String message, CallbackContext callbackContext) {
         ETPushConfig config;
         if(context == null){
             context = this.cordova.getActivity().getApplicationContext();
@@ -164,7 +164,7 @@ public class MkCPlugin extends CordovaPlugin {
             Log.e(TAG, e.getMessage());
             callbackContext.error("Unknown Error");
         }
-    }
+    }*/
 
     private void init(){
         ETPushConfig config;
