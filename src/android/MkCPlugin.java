@@ -63,6 +63,7 @@ public class MkCPlugin extends CordovaPlugin {
             // If we're here then your application will _NOT_ receive push notifications.
             Log.e(TAG, "onETPushConfigurationFailed");
             Log.e(TAG, e.getMessage());
+
         }
     };
 
@@ -98,6 +99,7 @@ public class MkCPlugin extends CordovaPlugin {
                 etPush = ETPush.getInstance();
             } catch (ETException e) {
                 Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
             }
         }
         callbackContext.success(etPush.getDeviceId());
@@ -109,6 +111,7 @@ public class MkCPlugin extends CordovaPlugin {
                 etPush = ETPush.getInstance();
             } catch (ETException e) {
                 Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
             }
         }
         callbackContext.success(etPush.getSDKState());
@@ -148,10 +151,10 @@ public class MkCPlugin extends CordovaPlugin {
             callbackContext.success(etPush.getDeviceId());
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
-            ccallbackContext.error('error::'+e.getMessage());
+            ccallbackContext.error(e.getMessage());
         }  catch (Exception e) {
             Log.e(TAG, e.getMessage());
-            callbackContext.error('error::'+e.getMessage());
+            callbackContext.error(e.getMessage());
         }
     }
 }
