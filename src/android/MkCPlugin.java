@@ -43,11 +43,14 @@ public class MkCPlugin extends CordovaPlugin {
     private static boolean isActive;
     public static Activity mainActivity;
     private static CordovaWebView gWebView;
+
     
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         application = this.cordova.getActivity().getApplication();
+        Log.e(TAG, "TEST INIT");
+        init();
     }
     
     @Override
@@ -161,7 +164,72 @@ public class MkCPlugin extends CordovaPlugin {
             Log.e(TAG, e.getMessage());
             callbackContext.error("Unknown Error");
         }
-        
-        
+    }
+
+    private void init(){
+        ETPushConfig config;
+        if(context == null){
+            context = this.cordova.getActivity().getApplicationContext();
+        }
+        try {
+
+            Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            String appID;
+            String accessToken;
+            String gcmSenderID;
+            String analyticsEnabled;
+            String setWamaEnabled;
+
+
+            appID = bundle.getString("ETApplicationID");
+            accessToken = bundle.getString("AccessToken");
+            gcmSenderID = bundle.getString("GCMSenderID");
+            analyticsEnabled = bundle.getString("UseAnalytics");
+            setWamaEnabled = bundle.getString("UseGeofences");
+
+
+            Log.i(TAG, appID);
+            Log.i(TAG, accessToken);
+            Log.i(TAG, gcmSenderID);
+            Log.i(TAG, analyticsEnabled);
+            Log.i(TAG, setWamaEnabled);
+
+            config = new ETPushConfig.Builder(application)
+                    .setEtAppId(appID)
+                    .setAccessToken(accessToken)
+                    .setGcmSenderId(gcmSenderID)
+                    .setAnalyticsEnabled(Boolean.valueOf(analyticsEnabled))    // ET Analytics, default = false
+                    .setWamaEnabled(Boolean.valueOf(setWamaEnabled))
+                    .build();
+
+
+            ETPushConfigureSdkListener listener = new ETPushConfigureSdkListener() {
+                @Override
+                public void onETPushConfigurationSuccess(ETPush etPush, ETRequestStatus etRequestStatus) {
+                    Log.i(TAG, "onETPushConfigurationSuccess");
+                    Log.i(TAG, "GooglePlayServiceStatusCode :: " + String.valueOf(etRequestStatus.getGooglePlayServiceStatusCode()));
+                    Log.i(TAG, "GoogleApiAvailability :: " + String.valueOf(GoogleApiAvailability.getInstance().isUserResolvableError(etRequestStatus.getGooglePlayServiceStatusCode())));
+
+                    // Verify Google Play Services availability and notify the user of any exceptions
+                    if (etRequestStatus.getGooglePlayServiceStatusCode() != ConnectionResult.SUCCESS && GoogleApiAvailability.getInstance().isUserResolvableError(etRequestStatus.getGooglePlayServiceStatusCode())) {
+                        Log.e(TAG, "GoogleApiERROR");
+                        GoogleApiAvailability.getInstance().showErrorNotification(application.getApplicationContext(), etRequestStatus.getGooglePlayServiceStatusCode());
+                    }
+                }
+
+                @Override
+                public void onETPushConfigurationFailed(ETException e) {
+                    // If we're here then your application will _NOT_ receive push notifications.
+                    Log.e(TAG, "onETPushConfigurationFailed");
+                    Log.e(TAG, e.getMessage());
+                }
+            };
+            etPush.configureSdk(config, listener);
+
+        } catch (ETException e) {
+            Log.e(TAG, e.getMessage());
+        }  catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 }
