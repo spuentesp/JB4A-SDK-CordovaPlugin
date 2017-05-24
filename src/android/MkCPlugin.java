@@ -56,6 +56,7 @@ public class MkCPlugin extends CordovaPlugin {
                 Log.e(TAG, "GoogleApiERROR");
                 GoogleApiAvailability.getInstance().showErrorNotification(application.getApplicationContext(), etRequestStatus.getGooglePlayServiceStatusCode());
             }
+            callbackContext.success(etPush.getDeviceId());
         }
 
         @Override
@@ -63,7 +64,7 @@ public class MkCPlugin extends CordovaPlugin {
             // If we're here then your application will _NOT_ receive push notifications.
             Log.e(TAG, "onETPushConfigurationFailed");
             Log.e(TAG, e.getMessage());
-
+            callbackContext.error(e.getMessage());
         }
     };
 
@@ -148,7 +149,7 @@ public class MkCPlugin extends CordovaPlugin {
             Log.e(TAG, "Configuring SDK");
             etPush.configureSdk(config, listener);
             Log.e(TAG, "SDK Configured");
-            callbackContext.success(etPush.getDeviceId());
+
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
