@@ -66,13 +66,7 @@ public class MkCPlugin extends CordovaPlugin {
         }
     };
 
-    ETPushConfig config = new ETPushConfig.Builder(application)
-            .setEtAppId(bundle.getString("ETApplicationID"))
-            .setAccessToken(bundle.getString("AccessToken"))
-            .setGcmSenderId(bundle.getString("GCMSenderID"))
-            .setAnalyticsEnabled(Boolean.valueOf(bundle.getString("UseAnalytics")))    // ET Analytics, default = false
-            .setWamaEnabled(Boolean.valueOf(bundle.getString("UseGeofences")))
-            .build();
+
 
     
     @Override
@@ -125,6 +119,13 @@ public class MkCPlugin extends CordovaPlugin {
         }
         try {
             Bundle bundle = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            ETPushConfig config = new ETPushConfig.Builder(application)
+                    .setEtAppId(bundle.getString("ETApplicationID"))
+                    .setAccessToken(bundle.getString("AccessToken"))
+                    .setGcmSenderId(bundle.getString("GCMSenderID"))
+                    .setAnalyticsEnabled(Boolean.valueOf(bundle.getString("UseAnalytics")))    // ET Analytics, default = false
+                    .setWamaEnabled(Boolean.valueOf(bundle.getString("UseGeofences")))
+                    .build();
             etPush.configureSdk(config, listener);
         } catch (ETException e) {
             Log.e(TAG, e.getMessage());
