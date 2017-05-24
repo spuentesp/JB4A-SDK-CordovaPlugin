@@ -137,7 +137,7 @@ public class MkCPlugin extends CordovaPlugin {
 
             ETPushConfig config = new ETPushConfig.Builder(application)
                     .setEtAppId(bundle.getString("ETApplicationID"))
-                    .setAccessToken(bundle.getString("AccessToken"))
+                    .setAccessToken(bundle.getString("ETAccessToken"))
                     .setGcmSenderId(bundle.getString("GCMSenderID"))
                     .setAnalyticsEnabled(Boolean.valueOf(bundle.getString("UseAnalytics")))    // ET Analytics, default = false
                     .setWamaEnabled(Boolean.valueOf(bundle.getString("UseGeofences")))
