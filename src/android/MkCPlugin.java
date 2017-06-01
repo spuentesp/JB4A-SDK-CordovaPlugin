@@ -199,7 +199,8 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.setSubscriberKey(args[0]));
+            etPush.setSubscriberKey(args.getString(0));
+            callbackContext.success("subscriber key set::"+args.getString(0));
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -219,6 +220,7 @@ public class MkCPlugin extends CordovaPlugin {
         }
         try{
             callbackContext.success(etPush.getSubscriberKey());
+
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -235,7 +237,8 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.addAttribute(args[0]));
+            etPush.addAttribute(args.getString(0));
+            callbackContext.success("Attribute set::"+args.getString(0));
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -252,7 +255,8 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.removeAttribute(args[0]));
+            etPush.removeAttribute(args.getString(0));
+            callbackContext.success("attribute removed::"+args.getString(0));
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -286,7 +290,8 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.addTag(args[0]));
+            etPush.addTag(args.getString(0));
+            callbackContext.success("tag added::"+args.getString(0));
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -303,7 +308,9 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.removeTag(args[0]));
+
+            etPush.removeTag(args.getString(0));
+            callbackContext.success("tag removed::"+args.getString(0));
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
