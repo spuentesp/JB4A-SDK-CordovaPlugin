@@ -69,6 +69,34 @@ public class MkCPlugin extends CordovaPlugin {
             this.initMkC(null, callbackContext);
             return true;
         }
+        if (action.equals("registerForNotifications")) {
+            this.registerForNotifications(null, callbackContext);
+            return true;
+        }
+        if (action.equals("setSubscriberKey")) {
+            this.setSubscriberKey(null, callbackContext);
+            return true;
+        }
+        if (action.equals("getSubscriberKey")) {
+            this.getSubscriberKey(null, callbackContext);
+            return true;
+        }
+        if (action.equals("addAttribute")) {
+            this.addAttribute(null, callbackContext);
+            return true;
+        }
+        if (action.equals("removeAttribute")) {
+            this.initMkC(null, callbackContext);
+            return true;
+        }
+        if (action.equals("addTag")) {
+            this.addTag(null, callbackContext);
+            return true;
+        }
+        if (action.equals("getTags")) {
+            this.getTags(null, callbackContext);
+            return true;
+        }
         return false;
     }
     
@@ -147,4 +175,156 @@ public class MkCPlugin extends CordovaPlugin {
             callbackContext.error(e.getMessage());
         }
     }
+
+
+    private void registerForNotificatons(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        callbackContext.success(etPush.getSDKState());
+    }
+
+    private void setSubscriberKey(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.setSubscriberKey(args[0]));
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+
+
+    }
+
+    private void getSubscriberKey(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.getSubscriberKey());
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private void addAttribute(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.addAttribute(args[0]));
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private void removeAttribute(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.removeAttribute(args[0]));
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private void getAttributes(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.getAttributes());
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private void addTag(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.addTag(args[0]));
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private void removeTag(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.removeTag(args[0]));
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private void getTags(JSONArray args, CallbackContext callbackContext){
+        if(etPush == null){
+            try {
+                etPush = ETPush.getInstance();
+            } catch (ETException e) {
+                Log.e(TAG, e.getMessage());
+                callbackContext.error(e.getMessage());
+            }
+        }
+        try{
+            callbackContext.success(etPush.getTags());
+        }catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
+    }
+
 }
