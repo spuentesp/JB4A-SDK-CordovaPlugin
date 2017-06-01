@@ -23,6 +23,7 @@ import com.exacttarget.etpushsdk.ETRequestStatus;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.ConnectionResult;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +44,6 @@ public class MkCPlugin extends CordovaPlugin {
     private static boolean isActive;
     public static Activity mainActivity;
     private static CordovaWebView gWebView;
-
-
-
-
-
     
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -69,32 +65,36 @@ public class MkCPlugin extends CordovaPlugin {
             this.initMkC(null, callbackContext);
             return true;
         }
-        if (action.equals("registerForNotifications")) {
-            this.registerForNotifications(null, callbackContext);
-            return true;
-        }
         if (action.equals("setSubscriberKey")) {
-            this.setSubscriberKey(null, callbackContext);
+            this.setSubscriberKey(args, callbackContext);
             return true;
         }
         if (action.equals("getSubscriberKey")) {
-            this.getSubscriberKey(null, callbackContext);
+            this.getSubscriberKey(callbackContext);
+            return true;
+        }
+        if (action.equals("getAttributes")) {
+            this.getSubscriberKey(callbackContext);
             return true;
         }
         if (action.equals("addAttribute")) {
-            this.addAttribute(null, callbackContext);
+            this.addAttribute(args, callbackContext);
             return true;
         }
         if (action.equals("removeAttribute")) {
-            this.initMkC(null, callbackContext);
+            this.removeAttribute(args, callbackContext);
             return true;
         }
         if (action.equals("addTag")) {
-            this.addTag(null, callbackContext);
+            this.addTag(args, callbackContext);
+            return true;
+        }
+        if (action.equals("removeTag")) {
+            this.addTag(args, callbackContext);
             return true;
         }
         if (action.equals("getTags")) {
-            this.getTags(null, callbackContext);
+            this.getTags(callbackContext);
             return true;
         }
         return false;
@@ -176,19 +176,6 @@ public class MkCPlugin extends CordovaPlugin {
         }
     }
 
-
-    private void registerForNotificatons(JSONArray args, CallbackContext callbackContext){
-        if(etPush == null){
-            try {
-                etPush = ETPush.getInstance();
-            } catch (ETException e) {
-                Log.e(TAG, e.getMessage());
-                callbackContext.error(e.getMessage());
-            }
-        }
-        callbackContext.success(etPush.getSDKState());
-    }
-
     private void setSubscriberKey(JSONArray args, CallbackContext callbackContext){
         if(etPush == null){
             try {
@@ -209,7 +196,7 @@ public class MkCPlugin extends CordovaPlugin {
 
     }
 
-    private void getSubscriberKey(JSONArray args, CallbackContext callbackContext){
+    private void getSubscriberKey(CallbackContext callbackContext){
         if(etPush == null){
             try {
                 etPush = ETPush.getInstance();
@@ -237,8 +224,8 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            etPush.addAttribute(args.getString(0));
-            callbackContext.success("Attribute set::"+args.getString(0));
+            etPush.addAttribute(args.getString(0),args.getString(1));
+            callbackContext.success("Attribute set::"+args.getString(0)+","+args.getString(1));
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -263,7 +250,7 @@ public class MkCPlugin extends CordovaPlugin {
         }
     }
 
-    private void getAttributes(JSONArray args, CallbackContext callbackContext){
+    private void getAttributes(CallbackContext callbackContext){
         if(etPush == null){
             try {
                 etPush = ETPush.getInstance();
@@ -273,7 +260,9 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.getAttributes());
+            String[] resp = etPush.getTags().toArray(new String[etPush.getAttributes().size()]);
+            JSONArray cb = new JSONArray(Arrays.asList(resp));
+            callbackContext.success(cb.toString());
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());
@@ -317,7 +306,7 @@ public class MkCPlugin extends CordovaPlugin {
         }
     }
 
-    private void getTags(JSONArray args, CallbackContext callbackContext){
+    private void getTags(CallbackContext callbackContext){
         if(etPush == null){
             try {
                 etPush = ETPush.getInstance();
@@ -327,7 +316,9 @@ public class MkCPlugin extends CordovaPlugin {
             }
         }
         try{
-            callbackContext.success(etPush.getTags());
+            String[] resp = etPush.getTags().toArray(new String[etPush.getTags().size()]);
+            JSONArray cb = new JSONArray(Arrays.asList(resp));
+            callbackContext.success(cb.toString());
         }catch (Exception e) {
             Log.e(TAG, e.getMessage());
             callbackContext.error(e.getMessage());

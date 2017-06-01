@@ -6,38 +6,36 @@ exports.getDeviceId = function(success, error) {
     exec(success, error, "MkCPlugin", "getDeviceId", []);
 };
 
-exports.initMkC = function( success, error) {
+exports.initMkC = function(success, error) {
     exec(success, error, "MkCPlugin", "initMkC", []);
 };
 
 exports.getSDKState = function(success, error) {
     exec(success, error, "MkCPlugin", "getSDKState", []);
 };
-
-exports.registerForNotifications = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", [arg0]);
+exports.setSubscriberKey = function(subscriberKey,success, error) {
+    exec(success, error, "MkCPlugin", "setSubscriberKey", [subscriberKey]);
+};
+exports.getSubscriberKey = function(success, error) {
+    exec(success, error, "MkCPlugin", "getSubscriberKey", []);
 };
 
-exports.setSubscriberKey = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "setSubscriberKey", [arg0]);
+exports.addAttribute = function(name,value,success, error) {
+    exec(success, error, "MkCPlugin", "addAttribute", [name,value]);
 };
 
-exports.getSubscriberKey = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", []);
+exports.removeAttribute = function(name,success, error) {
+    exec(success, error, "MkCPlugin", "removeAttribute", [name]);
 };
-
-exports.addAttribute = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", [arg0]);
+exports.getAttributes = function(success, error) {
+    exec(success, error, "MkCPlugin", "getAttributes", []);
 };
-
-exports.removeAttribute = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", [arg0]);
+exports.addTag = function(name,value,success, error) {
+    exec(success, error, "MkCPlugin", "addAttribute", [name,value]);
 };
-
-exports.addTag = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", [arg0]);
+exports.removeTag = function(key,val,success, error) {
+    exec(success, error, "MkCPlugin", "removeTag", [key,val]);
 };
-
-exports.getTags = function(callback,success, error) {
-    exec(success, error, "MkCPlugin", "registerForNotifications", []);
+exports.getTags = function(success, error) {
+    exec(success, error, "MkCPlugin", "getTags", []);
 };
