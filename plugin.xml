@@ -101,7 +101,6 @@
                     <category android:name="${applicationId}" />
                 </intent-filter>
             </receiver>
-            <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
             
             <!-- ETLandingPagePresenter is the default OD and CloudPage handler -->
